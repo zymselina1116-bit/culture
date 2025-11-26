@@ -13,33 +13,33 @@
         <p class="subtitle">Select, Observe, Intervene</p>
 
         <div class="selection-container">
-            <!-- Left: Civilization Buttons -->
+            <!-- Left: Map Buttons -->
             <div class="civilization-buttons">
-                <button class="civ-btn" data-civ="egypt">
-                    <span class="civ-icon">𓂀</span>
-                    <span class="civ-name">Ancient Egypt</span>
+                <button class="civ-btn" data-map="river">
+                    <span class="civ-icon">🏞️</span>
+                    <span class="civ-name">River Basin</span>
                 </button>
-                <button class="civ-btn" data-civ="greece">
-                    <span class="civ-icon">Ω</span>
-                    <span class="civ-name">Classical Greece</span>
+                <button class="civ-btn" data-map="mountain">
+                    <span class="civ-icon">⛰️</span>
+                    <span class="civ-name">Mountain Valley</span>
                 </button>
-                <button class="civ-btn" data-civ="china">
-                    <span class="civ-icon">中</span>
-                    <span class="civ-name">Ancient China</span>
+                <button class="civ-btn" data-map="coastal">
+                    <span class="civ-icon">🌊</span>
+                    <span class="civ-name">Coastal Peninsula</span>
                 </button>
             </div>
 
             <!-- Center: 3D Preview -->
             <div class="preview-zone">
                 <canvas id="preview-canvas"></canvas>
-                <div class="preview-label">3D PREVIEW</div>
+                <div class="preview-label">MAP PREVIEW</div>
             </div>
 
             <!-- Right: Description Panel -->
             <div class="description-panel">
-                <h2 id="desc-title">Hover over a civilization</h2>
+                <h2 id="desc-title">Hover over a map</h2>
                 <div id="desc-content">
-                    <p class="desc-text">Select a historical civilization to observe and manipulate their accelerated development.</p>
+                    <p class="desc-text">Select a map to determine the terrain, climate, and environmental characteristics of your civilization.</p>
                 </div>
                 <div id="desc-dna" class="dna-display"></div>
                 <button id="start-btn" class="start-button" disabled>BEGIN SIMULATION</button>
@@ -50,7 +50,7 @@
     <!-- PHASE 2: MAIN SIMULATION -->
     <div id="simulation-screen" class="screen">
         <div class="sim-header">
-            <h2 id="civ-title">CIVILIZATION NAME</h2>
+            <h2 id="civ-title">MAP: UNKNOWN</h2>
             <div class="stats-bar">
                 <span class="stat">Population: <span id="stat-population">0</span></span>
                 <span class="stat">Buildings: <span id="stat-buildings">0</span></span>
