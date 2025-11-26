@@ -5,7 +5,7 @@
 
 class CivilizationAccelerator {
     constructor() {
-        this.selectedMap = null;
+        this.selectedCiv = null;
         this.previewScene = null;
         this.mainScene = null;
         this.isSimulationRunning = false;
@@ -36,90 +36,161 @@ class CivilizationAccelerator {
         this.enemies = [];
         this.rivers = [];
 
-        // Map definitions
-        this.maps = {
-            river: {
-                name: 'River Basin',
-                terrainType: 'flat',
-                description: `Wide flat plains with a central river running through fertile lands.
-                              Ideal for agriculture and early settlement. Prone to seasonal flooding.`,
-                characteristics: 'Flat terrain, central river, high fertility',
-                climate: 'Moderate, flood cycles',
-                difficulty: 'Easy',
+        // Civilization definitions
+        this.civilizations = {
+            egypt: {
+                name: 'Ancient Egypt',
+                region: 'North Africa',
+                description: `The mighty civilization along the Nile River. Known for pyramids,
+                              pharaohs, and one of the earliest writing systems.`,
+                terrainType: 'desert',
                 colors: {
-                    primary: 0x8b4513,    // Buildings - brown wood
-                    secondary: 0xd4a574,  // NPCs - tan
-                    terrain: 0x6b8e23,    // Fertile green
-                    water: 0x4682b4,      // River blue
-                    vegetation: 0x228b22  // Forest green
+                    primary: 0xd4a017,    // Golden sandstone
+                    secondary: 0xf5f5dc,  // White linen NPCs
+                    terrain: 0xc2b280,    // Desert sand
+                    water: 0x4682b4,      // Nile blue
+                    vegetation: 0x6b8e23  // Papyrus green
                 },
                 terrainConfig: {
-                    heightScale: 2,       // Low mountains
+                    heightScale: 2,
                     riverEnabled: true,
-                    oceanSide: null,      // No ocean
-                    vegetationDensity: 0.8,
-                    flatness: 0.7
+                    oceanSide: null,
+                    vegetationDensity: 0.3,
+                    flatness: 0.8
+                },
+                buildings: {
+                    type: 'pyramid',      // Pyramids and mud-brick structures
+                    baseSize: 2.5,
+                    heightRange: [4, 8]
+                },
+                startParams: {
+                    lifeDifficulty: 40,
+                    climateThreat: 55,
+                    borderOpenness: 45
+                }
+            },
+            greece: {
+                name: 'Classical Greece',
+                region: 'Mediterranean',
+                description: `Birthplace of democracy and philosophy. Rocky coastlines, marble temples,
+                              and city-states that shaped Western civilization.`,
+                terrainType: 'coastal',
+                colors: {
+                    primary: 0xf5f5f5,    // Marble white
+                    secondary: 0x4169e1,  // Blue tunic NPCs
+                    terrain: 0x8b7355,    // Rocky brown
+                    water: 0x006994,      // Mediterranean blue
+                    vegetation: 0x808000  // Olive green
+                },
+                terrainConfig: {
+                    heightScale: 4,
+                    riverEnabled: false,
+                    oceanSide: 'east',
+                    vegetationDensity: 0.5,
+                    flatness: 0.4
+                },
+                buildings: {
+                    type: 'temple',       // Columns and amphitheaters
+                    baseSize: 2.0,
+                    heightRange: [3, 6]
+                },
+                startParams: {
+                    lifeDifficulty: 35,
+                    climateThreat: 40,
+                    borderOpenness: 70
+                }
+            },
+            china: {
+                name: 'Ancient China',
+                region: 'East Asia',
+                description: `Ancient civilization along the Yellow and Yangtze rivers. Inventors of
+                              paper, gunpowder, and builders of the Great Wall.`,
+                terrainType: 'fertile',
+                colors: {
+                    primary: 0x8b4513,    // Wooden halls
+                    secondary: 0xff6347,  // Red robes
+                    terrain: 0x6b8e23,    // Fertile plains
+                    water: 0x4682b4,      // River blue
+                    vegetation: 0x228b22  // Bamboo green
+                },
+                terrainConfig: {
+                    heightScale: 3,
+                    riverEnabled: true,
+                    oceanSide: null,
+                    vegetationDensity: 0.7,
+                    flatness: 0.6
+                },
+                buildings: {
+                    type: 'pagoda',       // Tiered roofs
+                    baseSize: 2.2,
+                    heightRange: [5, 9]
                 },
                 startParams: {
                     lifeDifficulty: 30,
+                    climateThreat: 50,
+                    borderOpenness: 55
+                }
+            },
+            mesopotamia: {
+                name: 'Mesopotamia',
+                region: 'Middle East',
+                description: `Cradle of civilization between the Tigris and Euphrates. Birthplace of
+                              writing, law codes, and urban planning.`,
+                terrainType: 'river',
+                colors: {
+                    primary: 0xd2691e,    // Clay brick ziggurats
+                    secondary: 0xdaa520,  // Simple cloth NPCs
+                    terrain: 0xb8860b,    // Floodplain soil
+                    water: 0x4682b4,      // River blue
+                    vegetation: 0x9acd32  // Reeds
+                },
+                terrainConfig: {
+                    heightScale: 1.5,
+                    riverEnabled: true,
+                    oceanSide: null,
+                    vegetationDensity: 0.4,
+                    flatness: 0.9
+                },
+                buildings: {
+                    type: 'ziggurat',     // Stepped platforms
+                    baseSize: 3.0,
+                    heightRange: [4, 7]
+                },
+                startParams: {
+                    lifeDifficulty: 45,
                     climateThreat: 60,
                     borderOpenness: 50
                 }
             },
-            mountain: {
-                name: 'Mountain Valley',
-                terrainType: 'mountainous',
-                description: `Steep mountains surrounding a narrow valley. Defensible but isolated.
-                              Difficult terrain limits movement and expansion.`,
-                characteristics: 'High peaks, narrow valleys, steep slopes',
-                climate: 'Cold, harsh winters',
-                difficulty: 'Hard',
+            maya: {
+                name: 'Maya Civilization',
+                region: 'Central America',
+                description: `Master astronomers and mathematicians of Mesoamerica. Built massive
+                              stone cities in dense jungle environments.`,
+                terrainType: 'jungle',
                 colors: {
-                    primary: 0x708090,    // Stone gray
-                    secondary: 0xa9a9a9,  // Light gray
-                    terrain: 0x8b7355,    // Mountain brown
-                    water: 0x87ceeb,      // Sky blue
-                    vegetation: 0x556b2f  // Dark olive
+                    primary: 0x708090,    // Stone pyramids
+                    secondary: 0xff4500,  // Bright cloth
+                    terrain: 0x556b2f,    // Jungle soil
+                    water: 0x4682b4,      // Cenote blue
+                    vegetation: 0x006400  // Dense jungle
                 },
                 terrainConfig: {
-                    heightScale: 8,       // High mountains
+                    heightScale: 3.5,
                     riverEnabled: false,
                     oceanSide: null,
-                    vegetationDensity: 0.3,
-                    flatness: 0.1
-                },
-                startParams: {
-                    lifeDifficulty: 70,
-                    climateThreat: 75,
-                    borderOpenness: 20
-                }
-            },
-            coastal: {
-                name: 'Coastal Peninsula',
-                terrainType: 'coastal',
-                description: `A curved landmass surrounded by ocean on one side. Access to maritime trade
-                              and resources, but vulnerable to storms and invasions from the sea.`,
-                characteristics: 'Beaches, ocean access, maritime climate',
-                climate: 'Mild, stormy seasons',
-                difficulty: 'Medium',
-                colors: {
-                    primary: 0xf5deb3,    // Wheat buildings
-                    secondary: 0x4169e1,  // Ocean blue NPCs
-                    terrain: 0xc2b280,    // Sandy soil
-                    water: 0x006994,      // Deep ocean
-                    vegetation: 0x90ee90  // Light green
-                },
-                terrainConfig: {
-                    heightScale: 3,
-                    riverEnabled: false,
-                    oceanSide: 'east',    // Ocean on east side
-                    vegetationDensity: 0.6,
+                    vegetationDensity: 0.9,
                     flatness: 0.5
                 },
+                buildings: {
+                    type: 'pyramid',      // Step pyramids
+                    baseSize: 2.8,
+                    heightRange: [6, 10]
+                },
                 startParams: {
-                    lifeDifficulty: 45,
+                    lifeDifficulty: 50,
                     climateThreat: 55,
-                    borderOpenness: 70
+                    borderOpenness: 40
                 }
             }
         };
@@ -133,57 +204,55 @@ class CivilizationAccelerator {
     }
 
     // ==========================================
-    // PHASE 1: SELECTION SCREEN
+    // PHASE 1: WORLD MAP SELECTION SCREEN
     // ==========================================
 
     initSelectionScreen() {
-        const buttons = document.querySelectorAll('.civ-btn');
-        const startBtn = document.getElementById('start-btn');
+        const markers = document.querySelectorAll('.civ-marker');
+        const previewPanel = document.getElementById('preview-panel');
+        const previewTitle = document.getElementById('preview-civ-name');
+        const previewInfo = document.getElementById('preview-info');
 
-        buttons.forEach(btn => {
-            // Hover behavior
-            btn.addEventListener('mouseenter', () => {
-                const mapKey = btn.dataset.map;
-                this.updateDescription(mapKey);
-                this.updatePreview(mapKey);
+        markers.forEach(marker => {
+            // Hover behavior - show floating preview
+            marker.addEventListener('mouseenter', (e) => {
+                const civKey = marker.dataset.civ;
+                const civ = this.civilizations[civKey];
+
+                // Update preview panel content
+                previewTitle.textContent = civ.name;
+                previewInfo.innerHTML = `
+                    <strong>${civ.region}</strong><br>
+                    ${civ.description}
+                `;
+
+                // Show preview panel
+                previewPanel.classList.remove('hidden');
+
+                // Position preview panel next to marker
+                const rect = marker.getBoundingClientRect();
+                previewPanel.style.left = (rect.right + 20) + 'px';
+                previewPanel.style.top = rect.top + 'px';
+
+                // Generate 3D preview
+                this.updatePreview(civKey);
             });
 
-            // Click behavior
-            btn.addEventListener('click', () => {
-                buttons.forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                this.selectedMap = btn.dataset.map;
-                startBtn.disabled = false;
+            marker.addEventListener('mouseleave', () => {
+                // Hide preview panel
+                previewPanel.classList.add('hidden');
+            });
+
+            // Click behavior - select civilization
+            marker.addEventListener('click', () => {
+                markers.forEach(m => m.classList.remove('selected'));
+                marker.classList.add('selected');
+                this.selectedCiv = marker.dataset.civ;
+
+                // Start simulation immediately
+                this.startSimulation();
             });
         });
-
-        startBtn.addEventListener('click', () => {
-            this.startSimulation();
-        });
-    }
-
-    updateDescription(mapKey) {
-        const map = this.maps[mapKey];
-        const title = document.getElementById('desc-title');
-        const content = document.getElementById('desc-content');
-        const dnaDisplay = document.getElementById('desc-dna');
-
-        title.textContent = map.name;
-        content.innerHTML = `
-            <p class="desc-text">${map.description}</p>
-            <p class="desc-text"><strong>Characteristics:</strong> ${map.characteristics}</p>
-            <p class="desc-text"><strong>Climate:</strong> ${map.climate}</p>
-            <p class="desc-text"><strong>Difficulty:</strong> ${map.difficulty}</p>
-        `;
-
-        dnaDisplay.innerHTML = `
-            <div class="dna-item"><span class="dna-label">Terrain Type:</span><span class="dna-value">${map.terrainType}</span></div>
-            <div class="dna-item"><span class="dna-label">Height Scale:</span><span class="dna-value">${map.terrainConfig.heightScale}</span></div>
-            <div class="dna-item"><span class="dna-label">Vegetation:</span><span class="dna-value">${Math.floor(map.terrainConfig.vegetationDensity * 100)}%</span></div>
-            <div class="dna-item"><span class="dna-label">River:</span><span class="dna-value">${map.terrainConfig.riverEnabled ? 'Yes' : 'No'}</span></div>
-            <div class="dna-item"><span class="dna-label">Starting Difficulty:</span><span class="dna-value">${map.startParams.lifeDifficulty}</span></div>
-            <div class="dna-item"><span class="dna-label">Climate Threat:</span><span class="dna-value">${map.startParams.climateThreat}</span></div>
-        `;
     }
 
     initPreviewCanvas() {
@@ -231,8 +300,8 @@ class CivilizationAccelerator {
         scene.add(sphere);
     }
 
-    updatePreview(mapKey) {
-        const map = this.maps[mapKey];
+    updatePreview(civKey) {
+        const civ = this.civilizations[civKey];
         const { scene } = this.previewScene;
 
         // Clear existing preview
@@ -240,29 +309,34 @@ class CivilizationAccelerator {
             scene.remove(scene.children[2]);
         }
 
-        // Create terrain based on map type
+        // Create terrain based on civilization type
         const size = 16;
         const resolution = 32;
         const geometry = new THREE.PlaneGeometry(size, size, resolution, resolution);
 
-        // Apply heightmap based on map type
+        // Apply heightmap based on civilization terrain
         const vertices = geometry.attributes.position;
         for (let i = 0; i < vertices.count; i++) {
             const x = vertices.getX(i);
             const z = vertices.getY(i);
             let height = 0;
 
-            if (mapKey === 'river') {
-                // Flat with central river depression
+            if (civ.terrainType === 'desert' || civ.terrainType === 'river') {
+                // Flat with variations
                 height = this.noise(x * 0.1, z * 0.1) * 0.5;
-                if (Math.abs(x) < 1) height -= 0.5; // River channel
-            } else if (mapKey === 'mountain') {
-                // High peaks
-                height = this.noise(x * 0.15, z * 0.15) * 4 +
-                        this.noise(x * 0.3, z * 0.3) * 2;
-            } else if (mapKey === 'coastal') {
-                // Gradual slope to one side
+                if (civ.terrainConfig.riverEnabled && Math.abs(x) < 1) {
+                    height -= 0.5; // River channel
+                }
+            } else if (civ.terrainType === 'coastal') {
+                // Gradual slope
                 height = this.noise(x * 0.1, z * 0.1) * 1.5 + (x * 0.15);
+            } else if (civ.terrainType === 'fertile') {
+                // Gentle rolling hills
+                height = this.noise(x * 0.15, z * 0.15) * 1.2;
+            } else if (civ.terrainType === 'jungle') {
+                // Varied terrain
+                height = this.noise(x * 0.2, z * 0.2) * 2 +
+                        this.noise(x * 0.1, z * 0.1) * 0.8;
             }
 
             vertices.setZ(i, height);
@@ -270,25 +344,33 @@ class CivilizationAccelerator {
         geometry.computeVertexNormals();
 
         const terrainMat = new THREE.MeshStandardMaterial({
-            color: map.colors.terrain,
+            color: civ.colors.terrain,
             flatShading: true
         });
         const terrain = new THREE.Mesh(geometry, terrainMat);
         terrain.rotation.x = -Math.PI / 2;
         scene.add(terrain);
 
-        // Add water based on map type
-        if (mapKey === 'river') {
+        // Add water based on civilization
+        if (civ.terrainConfig.riverEnabled) {
             // River strip
             const riverGeo = new THREE.BoxGeometry(2, 0.1, 16);
-            const riverMat = new THREE.MeshStandardMaterial({ color: map.colors.water, transparent: true, opacity: 0.7 });
+            const riverMat = new THREE.MeshStandardMaterial({
+                color: civ.colors.water,
+                transparent: true,
+                opacity: 0.7
+            });
             const river = new THREE.Mesh(riverGeo, riverMat);
             river.position.y = -0.3;
             scene.add(river);
-        } else if (mapKey === 'coastal') {
+        } else if (civ.terrainConfig.oceanSide) {
             // Ocean plane on one side
             const oceanGeo = new THREE.PlaneGeometry(8, 16);
-            const oceanMat = new THREE.MeshStandardMaterial({ color: map.colors.water, transparent: true, opacity: 0.6 });
+            const oceanMat = new THREE.MeshStandardMaterial({
+                color: civ.colors.water,
+                transparent: true,
+                opacity: 0.6
+            });
             const ocean = new THREE.Mesh(oceanGeo, oceanMat);
             ocean.rotation.x = -Math.PI / 2;
             ocean.position.x = 8;
@@ -296,11 +378,11 @@ class CivilizationAccelerator {
             scene.add(ocean);
         }
 
-        // Add sample buildings
+        // Add sample buildings based on civilization style
         for (let i = 0; i < 3; i++) {
             const height = 1.5 + Math.random() * 2;
             const buildingGeo = new THREE.BoxGeometry(1, height, 1);
-            const buildingMat = new THREE.MeshStandardMaterial({ color: map.colors.primary });
+            const buildingMat = new THREE.MeshStandardMaterial({ color: civ.colors.primary });
             const building = new THREE.Mesh(buildingGeo, buildingMat);
 
             building.position.x = (Math.random() - 0.5) * 6;
@@ -308,6 +390,19 @@ class CivilizationAccelerator {
             building.position.y = height / 2 + 0.5;
 
             scene.add(building);
+        }
+
+        // Add sample NPCs
+        for (let i = 0; i < 5; i++) {
+            const npcGeo = new THREE.CapsuleGeometry(0.2, 0.6, 4, 8);
+            const npcMat = new THREE.MeshStandardMaterial({ color: civ.colors.secondary });
+            const npc = new THREE.Mesh(npcGeo, npcMat);
+
+            npc.position.x = (Math.random() - 0.5) * 6;
+            npc.position.z = (Math.random() - 0.5) * 6;
+            npc.position.y = 1;
+
+            scene.add(npc);
         }
     }
 
@@ -320,11 +415,11 @@ class CivilizationAccelerator {
         document.getElementById('selection-screen').classList.remove('active');
         document.getElementById('simulation-screen').classList.add('active');
 
-        const map = this.maps[this.selectedMap];
-        document.getElementById('civ-title').textContent = `MAP: ${map.name.toUpperCase()}`;
+        const civ = this.civilizations[this.selectedCiv];
+        document.getElementById('civ-title').textContent = civ.name.toUpperCase();
 
-        // Load map settings into sliders
-        this.loadMapSettings();
+        // Load civilization settings into sliders
+        this.loadCivSettings();
 
         // Initialize main 3D scene
         this.initMainCanvas();
@@ -333,24 +428,24 @@ class CivilizationAccelerator {
         this.runInitialPreview();
     }
 
-    loadMapSettings() {
-        const map = this.maps[this.selectedMap];
+    loadCivSettings() {
+        const civ = this.civilizations[this.selectedCiv];
 
-        // Set sliders with map's starting parameters
-        document.getElementById('slider-life').value = map.startParams.lifeDifficulty;
+        // Set sliders with civilization's starting parameters
+        document.getElementById('slider-life').value = civ.startParams.lifeDifficulty;
         document.getElementById('slider-rumor').value = 50;  // Default
         document.getElementById('slider-tolerance').value = 50;  // Default
         document.getElementById('slider-innovation').value = 50;  // Default
-        document.getElementById('slider-climate').value = map.startParams.climateThreat;
-        document.getElementById('slider-border').value = map.startParams.borderOpenness;
+        document.getElementById('slider-climate').value = civ.startParams.climateThreat;
+        document.getElementById('slider-border').value = civ.startParams.borderOpenness;
 
         // Update params
-        this.params.lifeDifficulty = map.startParams.lifeDifficulty;
+        this.params.lifeDifficulty = civ.startParams.lifeDifficulty;
         this.params.rumorIntensity = 50;
         this.params.toleranceLevel = 50;
         this.params.innovationPace = 50;
-        this.params.climateThreat = map.startParams.climateThreat;
-        this.params.borderOpenness = map.startParams.borderOpenness;
+        this.params.climateThreat = civ.startParams.climateThreat;
+        this.params.borderOpenness = civ.startParams.borderOpenness;
 
         // Update displays
         this.updateSliderDisplays();
@@ -499,41 +594,48 @@ class CivilizationAccelerator {
     }
 
     createTerrain() {
-        const map = this.maps[this.selectedMap];
-        const config = map.terrainConfig;
+        const civ = this.civilizations[this.selectedCiv];
+        const config = civ.terrainConfig;
         const { scene } = this.mainScene;
 
-        // Procedural terrain with noise based on map type
+        // Procedural terrain with noise based on civilization type
         const size = 50;
         const resolution = 64;
         const geometry = new THREE.PlaneGeometry(size, size, resolution, resolution);
 
-        // Apply noise to vertices based on map configuration
+        // Apply noise to vertices based on civilization's terrain configuration
         const vertices = geometry.attributes.position;
         for (let i = 0; i < vertices.count; i++) {
             const x = vertices.getX(i);
             const z = vertices.getY(i);
             let height = 0;
 
-            if (this.selectedMap === 'river') {
-                // Flat plains with river channel
+            if (civ.terrainType === 'desert' || civ.terrainType === 'river') {
+                // Flat plains with optional river channel
                 height = this.noise(x * 0.1, z * 0.1) * config.heightScale * 0.5 +
                         this.noise(x * 0.05, z * 0.05) * config.heightScale * 0.3;
 
                 // River channel depression
-                if (Math.abs(x) < 3) {
+                if (config.riverEnabled && Math.abs(x) < 3) {
                     height -= config.heightScale * 0.5;
                 }
-            } else if (this.selectedMap === 'mountain') {
-                // High mountains with valleys
-                height = this.noise(x * 0.15, z * 0.15) * config.heightScale +
-                        this.noise(x * 0.3, z * 0.3) * config.heightScale * 0.5 +
-                        this.noise(x * 0.05, z * 0.05) * config.heightScale * 0.3;
-            } else if (this.selectedMap === 'coastal') {
+            } else if (civ.terrainType === 'coastal') {
                 // Gradual slope with peninsula shape
                 height = this.noise(x * 0.1, z * 0.1) * config.heightScale +
-                        (x * 0.1) + // Slope toward east
+                        (x * 0.1) + // Slope toward ocean side
                         this.noise(x * 0.05, z * 0.05) * config.heightScale * 0.5;
+            } else if (civ.terrainType === 'fertile') {
+                // Gentle rolling hills
+                height = this.noise(x * 0.12, z * 0.12) * config.heightScale +
+                        this.noise(x * 0.08, z * 0.08) * config.heightScale * 0.4;
+
+                if (config.riverEnabled && Math.abs(x) < 3) {
+                    height -= config.heightScale * 0.3;
+                }
+            } else if (civ.terrainType === 'jungle') {
+                // Varied mountainous jungle terrain
+                height = this.noise(x * 0.15, z * 0.15) * config.heightScale +
+                        this.noise(x * 0.25, z * 0.25) * config.heightScale * 0.6;
             }
 
             vertices.setZ(i, height);
@@ -542,7 +644,7 @@ class CivilizationAccelerator {
         geometry.computeVertexNormals();
 
         const material = new THREE.MeshStandardMaterial({
-            color: map.colors.terrain,
+            color: civ.colors.terrain,
             flatShading: true
         });
 
@@ -563,13 +665,13 @@ class CivilizationAccelerator {
     }
 
     createRiver() {
-        const map = this.maps[this.selectedMap];
+        const civ = this.civilizations[this.selectedCiv];
         const { scene } = this.mainScene;
 
         // Create river along center
         const riverGeo = new THREE.BoxGeometry(6, 0.2, 50);
         const riverMat = new THREE.MeshStandardMaterial({
-            color: map.colors.water,
+            color: civ.colors.water,
             transparent: true,
             opacity: 0.8
         });
@@ -580,7 +682,7 @@ class CivilizationAccelerator {
     }
 
     createVegetation(density) {
-        const map = this.maps[this.selectedMap];
+        const civ = this.civilizations[this.selectedCiv];
         const { scene } = this.mainScene;
         const count = Math.floor(40 * density);
 
@@ -590,7 +692,7 @@ class CivilizationAccelerator {
             const trunk = new THREE.Mesh(trunkGeo, trunkMat);
 
             const leavesGeo = new THREE.ConeGeometry(0.8, 2, 8);
-            const leavesMat = new THREE.MeshStandardMaterial({ color: map.colors.vegetation });
+            const leavesMat = new THREE.MeshStandardMaterial({ color: civ.colors.vegetation });
             const leaves = new THREE.Mesh(leavesGeo, leavesMat);
             leaves.position.y = 1.75;
 
@@ -614,15 +716,15 @@ class CivilizationAccelerator {
     }
 
     createWater() {
-        const map = this.maps[this.selectedMap];
+        const civ = this.civilizations[this.selectedCiv];
         const { scene } = this.mainScene;
 
-        // Different water placement based on map
-        if (this.selectedMap === 'coastal') {
-            // Ocean on east side
+        // Different water placement based on civilization terrain
+        if (civ.terrainConfig.oceanSide) {
+            // Ocean on specified side
             const waterGeo = new THREE.PlaneGeometry(30, 60);
             const waterMat = new THREE.MeshStandardMaterial({
-                color: map.colors.water,
+                color: civ.colors.water,
                 transparent: true,
                 opacity: 0.7,
                 side: THREE.DoubleSide
@@ -637,7 +739,7 @@ class CivilizationAccelerator {
             // Circular ocean around island
             const waterGeo = new THREE.CircleGeometry(60, 64);
             const waterMat = new THREE.MeshStandardMaterial({
-                color: map.colors.water,
+                color: civ.colors.water,
                 transparent: true,
                 opacity: 0.6,
                 side: THREE.DoubleSide
@@ -651,19 +753,21 @@ class CivilizationAccelerator {
     }
 
     createBuildings() {
-        const map = this.maps[this.selectedMap];
+        const civ = this.civilizations[this.selectedCiv];
         const { scene } = this.mainScene;
 
         const count = 12;
 
         for (let i = 0; i < count; i++) {
-            const height = 3 + Math.random() * 5;
-            const width = 2 + Math.random() * 2;
+            const buildingConfig = civ.buildings;
+            const height = buildingConfig.heightRange[0] +
+                          Math.random() * (buildingConfig.heightRange[1] - buildingConfig.heightRange[0]);
+            const width = buildingConfig.baseSize + Math.random() * 1;
 
             const geometry = new THREE.BoxGeometry(width, height, width);
             const material = new THREE.MeshStandardMaterial({
-                color: map.colors.primary,
-                emissive: map.colors.primary,
+                color: civ.colors.primary,
+                emissive: civ.colors.primary,
                 emissiveIntensity: 0.1
             });
 
@@ -694,7 +798,7 @@ class CivilizationAccelerator {
     }
 
     createNPCs() {
-        const map = this.maps[this.selectedMap];
+        const civ = this.civilizations[this.selectedCiv];
         const { scene } = this.mainScene;
 
         const count = 30;
@@ -702,7 +806,7 @@ class CivilizationAccelerator {
         for (let i = 0; i < count; i++) {
             const geometry = new THREE.CapsuleGeometry(0.4, 1.2, 4, 8);
             const material = new THREE.MeshStandardMaterial({
-                color: map.colors.secondary
+                color: civ.colors.secondary
             });
 
             const npc = new THREE.Mesh(geometry, material);
@@ -898,8 +1002,8 @@ class CivilizationAccelerator {
 
             // Color variation based on innovation
             if (innovation > 60 && Math.random() < 0.01) {
-                const map = this.maps[this.selectedMap];
-                const colors = [map.colors.primary, map.colors.secondary, map.colors.terrain];
+                const civ = this.civilizations[this.selectedCiv];
+                const colors = [civ.colors.primary, civ.colors.secondary, civ.colors.terrain];
                 building.material.color.setHex(colors[Math.floor(Math.random() * colors.length)]);
             }
         });
