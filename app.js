@@ -1,104 +1,167 @@
 // ========================================
-// THE CHRONO-CULTURAL INCUBATOR - 3D GOD MODE
-// Main Application with Three.js
+// THE CHRONO-CULTURAL INCUBATOR
+// Accelerated Evolution Simulation
 // ========================================
 
-class CivilizationIncubator3D {
+class AcceleratedCivilization {
     constructor() {
-        // Genesis Configuration Data
-        this.config = {
-            name: '',
-            fear: '',
-            aesthetic: '',
-            ritual: ''
+        // Archetype definitions
+        this.archetypes = {
+            desert: {
+                name: 'Desert Nomads',
+                description: 'Hardy survivors adapted to harsh desert conditions. High mobility, scarce resources.',
+                colors: { primary: 0xd4a574, secondary: 0xff8c42, terrain: 0xe0c097 },
+                climate: { sky: 0x4a3a1a, lighting: 0.9 },
+                parameters: {
+                    'life-difficulty': 75,
+                    'rumor-spread': 45,
+                    'societal-tolerance': 60,
+                    'innovation-pace': 40,
+                    'climate-threat': 70,
+                    'border-openness': 65
+                }
+            },
+            mountain: {
+                name: 'Mountain Farmers',
+                description: 'Isolated highlanders living in self-sufficient communities. Strong traditions, slow change.',
+                colors: { primary: 0x6b8e23, secondary: 0x8b7355, terrain: 0x5a7f4a },
+                climate: { sky: 0x5a6f8a, lighting: 0.7 },
+                parameters: {
+                    'life-difficulty': 60,
+                    'rumor-spread': 30,
+                    'societal-tolerance': 75,
+                    'innovation-pace': 25,
+                    'climate-threat': 50,
+                    'border-openness': 20
+                }
+            },
+            coastal: {
+                name: 'Coastal Traders',
+                description: 'Seafaring merchants with open borders and rapid innovation. Cosmopolitan and adaptable.',
+                colors: { primary: 0x4169e1, secondary: 0x87ceeb, terrain: 0x6fa3d8 },
+                climate: { sky: 0x87ceeb, lighting: 0.8 },
+                parameters: {
+                    'life-difficulty': 35,
+                    'rumor-spread': 55,
+                    'societal-tolerance': 70,
+                    'innovation-pace': 80,
+                    'climate-threat': 40,
+                    'border-openness': 85
+                }
+            },
+            forest: {
+                name: 'Forest Dwellers',
+                description: 'Balanced society living in harmony with nature. Sustainable and stable.',
+                colors: { primary: 0x228b22, secondary: 0x6b8e23, terrain: 0x4a7c4a },
+                climate: { sky: 0x4a7c7c, lighting: 0.6 },
+                parameters: {
+                    'life-difficulty': 50,
+                    'rumor-spread': 50,
+                    'societal-tolerance': 65,
+                    'innovation-pace': 50,
+                    'climate-threat': 50,
+                    'border-openness': 50
+                }
+            },
+            steppe: {
+                name: 'Steppe Warriors',
+                description: 'Aggressive horse-riding nomads. Expansionist and warlike.',
+                colors: { primary: 0xb8860b, secondary: 0xdaa520, terrain: 0xa89968 },
+                climate: { sky: 0x6a5a3a, lighting: 0.75 },
+                parameters: {
+                    'life-difficulty': 55,
+                    'rumor-spread': 70,
+                    'societal-tolerance': 30,
+                    'innovation-pace': 60,
+                    'climate-threat': 55,
+                    'border-openness': 40
+                }
+            },
+            river: {
+                name: 'River Civilization',
+                description: 'Advanced agricultural society along fertile rivers. Organized and innovative.',
+                colors: { primary: 0xcd853f, secondary: 0xdaa520, terrain: 0xb8956a },
+                climate: { sky: 0x6a8fb8, lighting: 0.85 },
+                parameters: {
+                    'life-difficulty': 30,
+                    'rumor-spread': 40,
+                    'societal-tolerance': 70,
+                    'innovation-pace': 75,
+                    'climate-threat': 35,
+                    'border-openness': 60
+                }
+            }
         };
 
-        // Parsed configuration
-        this.parsedConfig = {
-            colors: { primary: 0x00d4ff, secondary: 0x00ff9d, accent: 0xffaa00 },
-            climate: { sky: 0x1a1a2e, fog: 0x0f0f1e, lighting: 0.6 },
-            lifeDifficulty: 50
-        };
-
-        // Three.js objects
+        this.selectedArchetype = null;
         this.scene = null;
         this.camera = null;
         this.renderer = null;
         this.controls = null;
 
-        // World objects
+        // Simulation objects
         this.island = null;
         this.inhabitants = [];
         this.buildings = [];
         this.vegetation = [];
         this.walls = [];
-        this.weather = null;
+        this.waterLevel = null;
+        this.enemies = [];
+
+        // Time control
+        this.simulatedYear = 0;
+        this.simulatedMonth = 1;
+        this.timeScale = 0; // 0=pause, 1=1x, 2=10x, 3=100x
+        this.timeAccumulator = 0;
+        this.previewRunning = false;
 
         // Simulation state
-        this.inhabitantCount = 30;
-        this.simulationStartTime = null;
+        this.populationCount = 30;
+        this.buildingCount = 8;
         this.animationId = null;
-        this.ritualInterval = 60; // seconds
-        this.lastRitualTime = 0;
 
-        // Initialize
         this.init();
     }
 
     init() {
-        // Phase 1: Genesis Configuration
-        this.initGenesisPhase();
-
-        // Phase 2: God Mode (initialized after genesis)
-        // Phase 3: Final Report (initialized after freeze)
+        this.initArchetypeSelection();
     }
 
     // ========================================
-    // PHASE 1: GENESIS CONFIGURATION
+    // PHASE 1: ARCHETYPE SELECTION
     // ========================================
 
-    initGenesisPhase() {
-        // Input validation
-        const inputs = {
-            name: document.getElementById('civ-name'),
-            fear: document.getElementById('civ-fear'),
-            aesthetic: document.getElementById('civ-aesthetic'),
-            ritual: document.getElementById('civ-ritual')
-        };
-
-        const beginBtn = document.getElementById('begin-creation-btn');
-        const validationMsg = document.getElementById('validation-msg');
-
-        // Real-time validation
-        Object.values(inputs).forEach(input => {
-            input.addEventListener('input', () => {
-                const allFilled = Object.values(inputs).every(i => i.value.trim().length > 0);
-                beginBtn.disabled = !allFilled;
-
-                if (allFilled) {
-                    validationMsg.textContent = 'Ready to begin creation';
-                    validationMsg.classList.add('valid');
-                    this.updatePreview();
-                } else {
-                    validationMsg.textContent = 'Complete all fields to begin';
-                    validationMsg.classList.remove('valid');
-                }
-            });
-        });
-
-        // Begin creation button
-        beginBtn.addEventListener('click', () => {
-            this.config.name = inputs.name.value.trim();
-            this.config.fear = inputs.fear.value.trim();
-            this.config.aesthetic = inputs.aesthetic.value.trim();
-            this.config.ritual = inputs.ritual.value.trim();
-
-            this.parseConfiguration();
-            this.startGodMode();
-        });
+    initArchetypeSelection() {
+        const cards = document.querySelectorAll('.archetype-card');
+        const previewName = document.getElementById('preview-name');
+        const previewDesc = document.getElementById('preview-description');
 
         // Initialize preview canvas
         this.initPreviewCanvas();
+
+        // Hover previews
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const archetype = card.dataset.archetype;
+                const data = this.archetypes[archetype];
+
+                previewName.textContent = data.name;
+                previewDesc.textContent = data.description;
+
+                this.updatePreview(archetype);
+            });
+
+            // Click to select
+            card.addEventListener('click', () => {
+                cards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+
+                this.selectedArchetype = card.dataset.archetype;
+
+                // Start simulation after brief delay
+                setTimeout(() => this.startSimulation(), 1000);
+            });
+        });
     }
 
     initPreviewCanvas() {
@@ -106,21 +169,15 @@ class CivilizationIncubator3D {
         const container = canvas.parentElement;
 
         this.previewScene = new THREE.Scene();
-        this.previewCamera = new THREE.PerspectiveCamera(
-            50,
-            container.offsetWidth / container.offsetHeight,
-            0.1,
-            1000
-        );
-        this.previewCamera.position.set(0, 5, 10);
+        this.previewCamera = new THREE.PerspectiveCamera(50, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+        this.previewCamera.position.set(15, 10, 15);
         this.previewCamera.lookAt(0, 0, 0);
 
         this.previewRenderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-        this.previewRenderer.setSize(container.offsetWidth, container.offsetHeight);
+        this.previewRenderer.setSize(container.offsetWidth * 0.66, 400);
         this.previewRenderer.setPixelRatio(window.devicePixelRatio);
         this.previewRenderer.setClearColor(0x000000);
 
-        // Basic lighting
         const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
         this.previewScene.add(ambientLight);
 
@@ -128,104 +185,75 @@ class CivilizationIncubator3D {
         directionalLight.position.set(5, 10, 5);
         this.previewScene.add(directionalLight);
 
-        // Start preview animation
         this.animatePreview();
     }
 
-    updatePreview() {
-        // Clear existing preview objects
+    updatePreview(archetypeKey) {
+        // Clear existing preview
         while (this.previewScene.children.length > 2) {
             this.previewScene.remove(this.previewScene.children[2]);
         }
 
-        // Simple growing structure based on input
-        const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x00d4ff,
-            emissive: 0x00d4ff,
-            emissiveIntensity: 0.3
-        });
-        const mesh = new THREE.Mesh(geometry, material);
-        this.previewScene.add(mesh);
-        this.previewMesh = mesh;
+        const archetype = this.archetypes[archetypeKey];
+
+        // Simple island preview
+        const islandGeo = new THREE.CylinderGeometry(8, 9, 1, 32);
+        const islandMat = new THREE.MeshPhongMaterial({ color: archetype.colors.terrain });
+        const island = new THREE.Mesh(islandGeo, islandMat);
+        island.position.y = -0.5;
+        this.previewScene.add(island);
+
+        // Sample buildings
+        for (let i = 0; i < 3; i++) {
+            const angle = (i / 3) * Math.PI * 2;
+            const radius = 4;
+            const buildingGeo = new THREE.BoxGeometry(0.8, 1.5, 0.8);
+            const buildingMat = new THREE.MeshPhongMaterial({
+                color: archetype.colors.primary,
+                emissive: archetype.colors.primary,
+                emissiveIntensity: 0.2
+            });
+            const building = new THREE.Mesh(buildingGeo, buildingMat);
+            building.position.set(
+                Math.cos(angle) * radius,
+                0.75,
+                Math.sin(angle) * radius
+            );
+            this.previewScene.add(building);
+        }
+
+        // Sample inhabitants
+        for (let i = 0; i < 5; i++) {
+            const angle = (i / 5) * Math.PI * 2;
+            const radius = 2 + Math.random() * 3;
+            const personGeo = new THREE.CapsuleGeometry(0.2, 0.6, 4, 8);
+            const personMat = new THREE.MeshPhongMaterial({ color: archetype.colors.secondary });
+            const person = new THREE.Mesh(personGeo, personMat);
+            person.position.set(
+                Math.cos(angle) * radius,
+                0.5,
+                Math.sin(angle) * radius
+            );
+            this.previewScene.add(person);
+        }
     }
 
     animatePreview() {
-        if (this.previewMesh) {
-            this.previewMesh.rotation.x += 0.005;
-            this.previewMesh.rotation.y += 0.01;
-        }
-
         this.previewRenderer.render(this.previewScene, this.previewCamera);
         requestAnimationFrame(() => this.animatePreview());
     }
 
-    parseConfiguration() {
-        // Extract colors from aesthetic
-        const aesthetic = this.config.aesthetic.toLowerCase();
-
-        // Color keywords mapping
-        const colorMap = {
-            red: 0xff3333, crimson: 0xdc143c, scarlet: 0xff2400,
-            blue: 0x3366ff, azure: 0x007fff, cyan: 0x00ffff,
-            green: 0x33ff33, emerald: 0x50c878, jade: 0x00a86b,
-            gold: 0xffd700, golden: 0xffd700, amber: 0xffbf00,
-            purple: 0x9966ff, violet: 0x8f00ff, lavender: 0xe6e6fa,
-            white: 0xffffff, silver: 0xc0c0c0, grey: 0x808080,
-            black: 0x1a1a1a, obsidian: 0x0f0f0f,
-            orange: 0xff8800, coral: 0xff7f50,
-            yellow: 0xffff00, bronze: 0xcd7f32
-        };
-
-        // Find colors in aesthetic description
-        let primaryColor = 0x00d4ff;
-        let secondaryColor = 0x00ff9d;
-
-        for (const [keyword, color] of Object.entries(colorMap)) {
-            if (aesthetic.includes(keyword)) {
-                primaryColor = color;
-                break;
-            }
-        }
-
-        this.parsedConfig.colors.primary = primaryColor;
-        this.parsedConfig.colors.secondary = secondaryColor;
-
-        // Parse climate from fear
-        const fear = this.config.fear.toLowerCase();
-
-        if (fear.includes('dark') || fear.includes('night')) {
-            this.parsedConfig.climate.sky = 0x0a0a1a;
-            this.parsedConfig.climate.lighting = 0.3;
-            this.parsedConfig.lifeDifficulty = 70;
-        } else if (fear.includes('water') || fear.includes('drought') || fear.includes('dry')) {
-            this.parsedConfig.climate.sky = 0x4a4a2a;
-            this.parsedConfig.climate.lighting = 0.7;
-            this.parsedConfig.lifeDifficulty = 65;
-        } else if (fear.includes('cold') || fear.includes('freeze') || fear.includes('ice')) {
-            this.parsedConfig.climate.sky = 0xaaccdd;
-            this.parsedConfig.climate.lighting = 0.8;
-            this.parsedConfig.lifeDifficulty = 75;
-        } else if (fear.includes('fire') || fear.includes('heat') || fear.includes('burn')) {
-            this.parsedConfig.climate.sky = 0x4a2a1a;
-            this.parsedConfig.climate.lighting = 0.9;
-            this.parsedConfig.lifeDifficulty = 70;
-        } else {
-            this.parsedConfig.climate.sky = 0x1a1a2e;
-            this.parsedConfig.climate.lighting = 0.6;
-            this.parsedConfig.lifeDifficulty = 50;
-        }
-    }
-
     // ========================================
-    // PHASE 2: GOD MODE (3D WORLD)
+    // PHASE 2: ACCELERATED SIMULATION
     // ========================================
 
-    startGodMode() {
-        this.switchPhase('god-mode');
+    startSimulation() {
+        this.switchPhase('accelerated-sim');
 
-        // Set civilization title
-        document.getElementById('civilization-title').textContent = this.config.name.toUpperCase();
+        const archetype = this.archetypes[this.selectedArchetype];
+
+        // Set UI
+        document.getElementById('civilization-name').textContent = archetype.name.toUpperCase();
 
         // Initialize Three.js
         this.initThreeJS();
@@ -236,50 +264,44 @@ class CivilizationIncubator3D {
         this.createBuildings();
         this.createVegetation();
 
-        // Set initial slider values
-        document.getElementById('life-difficulty').value = this.parsedConfig.lifeDifficulty;
-        this.updateSliderDisplay('life-difficulty');
+        // Set archetype parameters
+        Object.keys(archetype.parameters).forEach(key => {
+            const slider = document.getElementById(key);
+            if (slider) {
+                slider.value = archetype.parameters[key];
+                this.updateSliderDisplay(key);
+            }
+        });
 
-        // Initialize sliders
+        // Initialize controls
+        this.initTimeControl();
+        this.initEventButtons();
         this.initSliders();
 
-        // Start simulation
-        this.simulationStartTime = Date.now();
+        // Start animation
         this.animateWorld();
-        this.startSimulationTimer();
-        this.startRitualTimer();
 
-        // Freeze button
-        document.getElementById('freeze-btn').addEventListener('click', () => {
-            this.freezeSimulation();
-        });
+        // Run 10-second preview at 100x
+        this.runInitialPreview();
     }
 
     initThreeJS() {
         const canvas = document.getElementById('world-canvas');
         const container = canvas.parentElement;
 
-        // Scene
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(this.parsedConfig.climate.sky);
-        this.scene.fog = new THREE.Fog(this.parsedConfig.climate.fog, 50, 200);
+        const archetype = this.archetypes[this.selectedArchetype];
+        this.scene.background = new THREE.Color(archetype.climate.sky);
+        this.scene.fog = new THREE.Fog(archetype.climate.sky, 50, 200);
 
-        // Camera
-        this.camera = new THREE.PerspectiveCamera(
-            60,
-            container.offsetWidth / container.offsetHeight,
-            0.1,
-            1000
-        );
+        this.camera = new THREE.PerspectiveCamera(60, container.offsetWidth / container.offsetHeight, 0.1, 1000);
         this.camera.position.set(30, 25, 30);
 
-        // Renderer
         this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
         this.renderer.setSize(container.offsetWidth, container.offsetHeight);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.shadowMap.enabled = true;
 
-        // Orbit controls
         this.controls = new THREE.OrbitControls(this.camera, canvas);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
@@ -287,24 +309,15 @@ class CivilizationIncubator3D {
         this.controls.minDistance = 15;
         this.controls.maxDistance = 80;
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, this.parsedConfig.climate.lighting);
+        const archetype = this.archetypes[this.selectedArchetype];
+        const ambientLight = new THREE.AmbientLight(0x404040, archetype.climate.lighting);
         this.scene.add(ambientLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, this.parsedConfig.climate.lighting);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, archetype.climate.lighting);
         directionalLight.position.set(50, 50, 25);
         directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
-        directionalLight.shadow.camera.near = 0.5;
-        directionalLight.shadow.camera.far = 500;
-        directionalLight.shadow.camera.left = -50;
-        directionalLight.shadow.camera.right = 50;
-        directionalLight.shadow.camera.top = 50;
-        directionalLight.shadow.camera.bottom = -50;
         this.scene.add(directionalLight);
 
-        // Handle window resize
         window.addEventListener('resize', () => {
             this.camera.aspect = container.offsetWidth / container.offsetHeight;
             this.camera.updateProjectionMatrix();
@@ -313,10 +326,11 @@ class CivilizationIncubator3D {
     }
 
     createIsland() {
-        // Island terrain
+        const archetype = this.archetypes[this.selectedArchetype];
+
         const islandGeometry = new THREE.CylinderGeometry(25, 28, 3, 32);
         const islandMaterial = new THREE.MeshPhongMaterial({
-            color: 0x4a7c59,
+            color: archetype.colors.terrain,
             flatShading: true
         });
         this.island = new THREE.Mesh(islandGeometry, islandMaterial);
@@ -324,7 +338,6 @@ class CivilizationIncubator3D {
         this.island.receiveShadow = true;
         this.scene.add(this.island);
 
-        // Beach ring
         const beachGeometry = new THREE.RingGeometry(25, 28, 32);
         const beachMaterial = new THREE.MeshBasicMaterial({
             color: 0xe5c9a0,
@@ -335,7 +348,6 @@ class CivilizationIncubator3D {
         beach.position.y = 0.1;
         this.scene.add(beach);
 
-        // Ocean
         const oceanGeometry = new THREE.CircleGeometry(100, 64);
         const oceanMaterial = new THREE.MeshPhongMaterial({
             color: 0x1a4d6d,
@@ -345,52 +357,48 @@ class CivilizationIncubator3D {
         ocean.rotation.x = -Math.PI / 2;
         ocean.position.y = -2;
         this.scene.add(ocean);
+
+        this.waterLevel = ocean;
     }
 
     createInhabitants() {
-        const color = this.parsedConfig.colors.primary;
+        const archetype = this.archetypes[this.selectedArchetype];
+        const color = archetype.colors.secondary;
 
-        for (let i = 0; i < this.inhabitantCount; i++) {
-            const angle = (i / this.inhabitantCount) * Math.PI * 2;
+        for (let i = 0; i < this.populationCount; i++) {
+            const angle = (i / this.populationCount) * Math.PI * 2;
             const radius = 5 + Math.random() * 15;
 
-            const x = Math.cos(angle) * radius;
-            const z = Math.sin(angle) * radius;
-
-            // Body
             const bodyGeometry = new THREE.CapsuleGeometry(0.3, 1, 4, 8);
             const bodyMaterial = new THREE.MeshPhongMaterial({
                 color: color,
                 emissive: color,
-                emissiveIntensity: 0.2
+                emissiveIntensity: 0.1
             });
             const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
             body.castShadow = true;
 
-            // Head
             const headGeometry = new THREE.SphereGeometry(0.25, 8, 8);
             const head = new THREE.Mesh(headGeometry, bodyMaterial);
             head.position.y = 0.75;
             body.add(head);
 
-            // Position
-            body.position.set(x, 0.7, z);
+            body.position.set(
+                Math.cos(angle) * radius,
+                0.7,
+                Math.sin(angle) * radius
+            );
 
-            // Store inhabitant data
             const inhabitant = {
                 mesh: body,
                 velocity: new THREE.Vector3(
-                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.05,
                     0,
-                    (Math.random() - 0.5) * 0.1
+                    (Math.random() - 0.5) * 0.05
                 ),
                 health: 1.0,
-                stress: 0,
-                group: Math.floor(Math.random() * 5),
-                performingRitual: false,
-                ritualTimer: 0,
-                targetPosition: null,
-                behavior: 'wander' // wander, gather, flee, shelter
+                alive: true,
+                infected: false
             };
 
             this.inhabitants.push(inhabitant);
@@ -399,15 +407,12 @@ class CivilizationIncubator3D {
     }
 
     createBuildings() {
-        const color = this.parsedConfig.colors.primary;
-        const buildingCount = 8;
+        const archetype = this.archetypes[this.selectedArchetype];
+        const color = archetype.colors.primary;
 
-        for (let i = 0; i < buildingCount; i++) {
-            const angle = (i / buildingCount) * Math.PI * 2;
+        for (let i = 0; i < this.buildingCount; i++) {
+            const angle = (i / this.buildingCount) * Math.PI * 2;
             const radius = 12 + Math.random() * 5;
-
-            const x = Math.cos(angle) * radius;
-            const z = Math.sin(angle) * radius;
 
             const height = 1.5 + Math.random() * 2;
             const width = 1 + Math.random() * 0.5;
@@ -419,14 +424,19 @@ class CivilizationIncubator3D {
                 emissiveIntensity: 0.1
             });
             const building = new THREE.Mesh(geometry, material);
-            building.position.set(x, height / 2, z);
+            building.position.set(
+                Math.cos(angle) * radius,
+                height / 2,
+                Math.sin(angle) * radius
+            );
             building.castShadow = true;
             building.receiveShadow = true;
 
             this.buildings.push({
                 mesh: building,
-                originalColor: color,
-                currentColor: color
+                originalHeight: height,
+                targetHeight: height,
+                growthRate: 0
             });
 
             this.scene.add(building);
@@ -434,14 +444,9 @@ class CivilizationIncubator3D {
     }
 
     createVegetation() {
-        const vegCount = 40;
-
-        for (let i = 0; i < vegCount; i++) {
+        for (let i = 0; i < 40; i++) {
             const angle = Math.random() * Math.PI * 2;
             const radius = Math.random() * 23;
-
-            const x = Math.cos(angle) * radius;
-            const z = Math.sin(angle) * radius;
 
             const trunkGeometry = new THREE.CylinderGeometry(0.1, 0.15, 0.8, 6);
             const trunkMaterial = new THREE.MeshPhongMaterial({ color: 0x6b4423 });
@@ -453,7 +458,11 @@ class CivilizationIncubator3D {
             leaves.position.y = 1;
             trunk.add(leaves);
 
-            trunk.position.set(x, 0.4, z);
+            trunk.position.set(
+                Math.cos(angle) * radius,
+                0.4,
+                Math.sin(angle) * radius
+            );
             trunk.castShadow = true;
 
             this.vegetation.push({
@@ -467,24 +476,267 @@ class CivilizationIncubator3D {
     }
 
     // ========================================
-    // SLIDERS AND REAL-TIME EFFECTS
+    // TIME CONTROL
+    // ========================================
+
+    initTimeControl() {
+        const timeSlider = document.getElementById('time-scale');
+        const speedDisplay = document.getElementById('current-speed');
+
+        timeSlider.addEventListener('input', () => {
+            this.timeScale = parseInt(timeSlider.value);
+
+            const speeds = ['PAUSED', '1x SPEED', '10x SPEED', '100x ACCELERATED'];
+            speedDisplay.textContent = speeds[this.timeScale];
+        });
+    }
+
+    runInitialPreview() {
+        // Run at 100x for 10 seconds
+        this.previewRunning = true;
+        this.timeScale = 3;
+        document.getElementById('time-scale').value = 3;
+        document.getElementById('current-speed').textContent = '100x ACCELERATED (PREVIEW)';
+
+        setTimeout(() => {
+            this.previewRunning = false;
+            this.timeScale = 0;
+            document.getElementById('time-scale').value = 0;
+            document.getElementById('current-speed').textContent = 'PAUSED';
+        }, 10000);
+    }
+
+    updateSimulationTime(delta) {
+        if (this.timeScale === 0) return;
+
+        const multipliers = [0, 1, 10, 100];
+        const actualDelta = delta * multipliers[this.timeScale];
+
+        this.timeAccumulator += actualDelta;
+
+        // Each "month" is 1 second of real time at 1x speed
+        if (this.timeAccumulator >= 1.0) {
+            this.simulatedMonth += Math.floor(this.timeAccumulator);
+            this.timeAccumulator -= Math.floor(this.timeAccumulator);
+
+            if (this.simulatedMonth > 12) {
+                this.simulatedYear += Math.floor(this.simulatedMonth / 12);
+                this.simulatedMonth = this.simulatedMonth % 12;
+                if (this.simulatedMonth === 0) this.simulatedMonth = 12;
+            }
+
+            document.getElementById('year-display').textContent =
+                String(this.simulatedYear).padStart(4, '0');
+            document.getElementById('month-display').textContent =
+                String(this.simulatedMonth).padStart(2, '0');
+
+            // Update era
+            this.updateEra();
+        }
+    }
+
+    updateEra() {
+        const eraDisplay = document.getElementById('current-era');
+        if (this.simulatedYear < 10) {
+            eraDisplay.textContent = 'EARLY SETTLEMENT';
+        } else if (this.simulatedYear < 50) {
+            eraDisplay.textContent = 'GROWTH PERIOD';
+        } else if (this.simulatedYear < 100) {
+            eraDisplay.textContent = 'ESTABLISHED SOCIETY';
+        } else {
+            eraDisplay.textContent = 'ADVANCED CIVILIZATION';
+        }
+    }
+
+    // ========================================
+    // EVENT INJECTION
+    // ========================================
+
+    initEventButtons() {
+        document.getElementById('inject-flood').addEventListener('click', () => {
+            this.injectFlood();
+        });
+
+        document.getElementById('inject-plague').addEventListener('click', () => {
+            this.injectPlague();
+        });
+
+        document.getElementById('inject-war').addEventListener('click', () => {
+            this.injectWar();
+        });
+
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            location.reload();
+        });
+    }
+
+    showEventNotification(title, message) {
+        const notification = document.getElementById('event-notification');
+        document.getElementById('event-title').textContent = title;
+        document.getElementById('event-message').textContent = message;
+
+        notification.classList.add('active');
+
+        setTimeout(() => {
+            notification.classList.remove('active');
+        }, 4000);
+    }
+
+    injectFlood() {
+        this.showEventNotification('THE DELUGE', 'Catastrophic flooding strikes the island!');
+
+        // Raise water level
+        const targetY = 1.5;
+        const startY = this.waterLevel.position.y;
+        const duration = 3000;
+        const startTime = Date.now();
+
+        const animateFlood = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            this.waterLevel.position.y = startY + (targetY - startY) * progress;
+
+            // Panic behavior
+            this.inhabitants.forEach(inh => {
+                if (inh.alive && inh.mesh.position.y < 2) {
+                    const toCenter = new THREE.Vector3(0, 0, 0).sub(inh.mesh.position).normalize();
+                    inh.velocity.copy(toCenter.multiplyScalar(0.15));
+                }
+            });
+
+            if (progress < 1) {
+                requestAnimationFrame(animateFlood);
+            } else {
+                // Recede after 5 seconds
+                setTimeout(() => {
+                    const recedeStart = Date.now();
+                    const animateRecede = () => {
+                        const elapsed = Date.now() - recedeStart;
+                        const progress = Math.min(elapsed / duration, 1);
+
+                        this.waterLevel.position.y = targetY + (startY - targetY) * progress;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(animateRecede);
+                        }
+                    };
+                    animateRecede();
+                }, 5000);
+            }
+        };
+
+        animateFlood();
+    }
+
+    injectPlague() {
+        this.showEventNotification('THE PLAGUE', 'A deadly disease sweeps through the population!');
+
+        let infectionCount = 0;
+        const maxInfected = Math.floor(this.inhabitants.length * 0.4);
+
+        const spreadDisease = () => {
+            if (infectionCount >= maxInfected) return;
+
+            const aliveInhabitants = this.inhabitants.filter(i => i.alive && !i.infected);
+            if (aliveInhabitants.length === 0) return;
+
+            const victim = aliveInhabitants[Math.floor(Math.random() * aliveInhabitants.length)];
+            victim.infected = true;
+            victim.mesh.material.color.setHex(0x88ff00); // Green sick color
+            infectionCount++;
+
+            setTimeout(() => {
+                victim.alive = false;
+                victim.health = 0;
+                victim.mesh.visible = false;
+                this.scene.remove(victim.mesh);
+            }, 2000);
+
+            if (infectionCount < maxInfected) {
+                setTimeout(spreadDisease, 500);
+            }
+        };
+
+        spreadDisease();
+    }
+
+    injectWar() {
+        this.showEventNotification('NEIGHBOR\'S WAR', 'Hostile forces attack from the borders!');
+
+        // Create enemy units at borders
+        for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * Math.PI * 2;
+            const radius = 30;
+
+            const enemyGeo = new THREE.ConeGeometry(0.4, 1.2, 4);
+            const enemyMat = new THREE.MeshPhongMaterial({
+                color: 0xff3366,
+                emissive: 0xff3366,
+                emissiveIntensity: 0.5
+            });
+            const enemy = new THREE.Mesh(enemyGeo, enemyMat);
+            enemy.position.set(
+                Math.cos(angle) * radius,
+                0.6,
+                Math.sin(angle) * radius
+            );
+            enemy.rotation.y = angle + Math.PI;
+
+            const enemyData = {
+                mesh: enemy,
+                angle: angle,
+                speed: 0.05
+            };
+
+            this.enemies.push(enemyData);
+            this.scene.add(enemy);
+        }
+
+        // Animate enemies moving inward
+        const attackDuration = 8000;
+        const startTime = Date.now();
+
+        const animateAttack = () => {
+            const elapsed = Date.now() - startTime;
+
+            this.enemies.forEach(enemy => {
+                const radius = 30 - (elapsed / attackDuration) * 15;
+                enemy.mesh.position.set(
+                    Math.cos(enemy.angle) * radius,
+                    0.6,
+                    Math.sin(enemy.angle) * radius
+                );
+            });
+
+            if (elapsed < attackDuration) {
+                requestAnimationFrame(animateAttack);
+            } else {
+                // Remove enemies
+                this.enemies.forEach(enemy => {
+                    this.scene.remove(enemy.mesh);
+                });
+                this.enemies = [];
+            }
+        };
+
+        animateAttack();
+    }
+
+    // ========================================
+    // SLIDERS
     // ========================================
 
     initSliders() {
         const sliderIds = [
-            'life-difficulty',
-            'rumor-spread',
-            'societal-tolerance',
-            'innovation-pace',
-            'climate-threat',
-            'border-openness'
+            'life-difficulty', 'rumor-spread', 'societal-tolerance',
+            'innovation-pace', 'climate-threat', 'border-openness'
         ];
 
         sliderIds.forEach(id => {
             const slider = document.getElementById(id);
             slider.addEventListener('input', () => {
                 this.updateSliderDisplay(id);
-                this.applySliderEffects();
             });
         });
     }
@@ -492,33 +744,13 @@ class CivilizationIncubator3D {
     updateSliderDisplay(sliderId) {
         const slider = document.getElementById(sliderId);
         const display = document.getElementById(`${sliderId}-val`);
-        display.textContent = `${slider.value}%`;
+        if (display) {
+            display.textContent = `${slider.value}%`;
+        }
     }
 
     applySliderEffects() {
-        const values = this.getSliderValues();
-
-        // Life Difficulty
-        this.applyLifeDifficulty(values.lifeDifficulty);
-
-        // Rumor Spread
-        this.applyRumorSpread(values.rumorSpread);
-
-        // Societal Tolerance
-        this.applySocietalTolerance(values.societalTolerance);
-
-        // Innovation Pace
-        this.applyInnovationPace(values.innovationPace);
-
-        // Climate Threat
-        this.applyClimateThreat(values.climateThreat);
-
-        // Border Openness
-        this.applyBorderOpenness(values.borderOpenness);
-    }
-
-    getSliderValues() {
-        return {
+        const values = {
             lifeDifficulty: parseInt(document.getElementById('life-difficulty').value),
             rumorSpread: parseInt(document.getElementById('rumor-spread').value),
             societalTolerance: parseInt(document.getElementById('societal-tolerance').value),
@@ -526,140 +758,56 @@ class CivilizationIncubator3D {
             climateThreat: parseInt(document.getElementById('climate-threat').value),
             borderOpenness: parseInt(document.getElementById('border-openness').value)
         };
-    }
 
-    applyLifeDifficulty(value) {
-        // Vegetation withering
-        const healthFactor = 1 - (value / 100) * 0.7;
+        // Vegetation health
+        const healthFactor = 1 - (values.lifeDifficulty / 100) * 0.7;
         this.vegetation.forEach(veg => {
             veg.health = healthFactor;
             veg.mesh.scale.y = veg.originalScale * healthFactor;
-            const colorValue = Math.floor(45 * healthFactor + 16);
-            veg.mesh.children[0].material.color.setHex(
-                (colorValue << 16) | (80 * healthFactor << 8) | 22
-            );
         });
 
-        // Inhabitant stress
-        this.inhabitants.forEach(inhabitant => {
-            inhabitant.stress = value / 100;
-            inhabitant.health = Math.max(0.1, 1 - value / 150);
+        // Building growth/decay based on overall health
+        const prosperity = (100 - values.lifeDifficulty + values.innovationPace) / 200;
+        this.buildings.forEach(building => {
+            building.targetHeight = building.originalHeight * (0.5 + prosperity * 1.5);
+            building.growthRate = (building.targetHeight - building.mesh.scale.y) * 0.01;
         });
 
-        // Check ritual degradation
-        if (value > 75) {
-            document.getElementById('ritual-health').textContent = 'DEGRADED';
-            document.getElementById('ritual-health').className = 'degraded';
-        } else if (value > 90) {
-            document.getElementById('ritual-health').textContent = 'FAILED';
-            document.getElementById('ritual-health').className = 'failed';
+        // Update civilization status
+        const statusElement = document.getElementById('civ-status');
+        if (prosperity > 0.7) {
+            statusElement.textContent = 'THRIVING';
+            statusElement.className = 'thriving';
+        } else if (prosperity > 0.4) {
+            statusElement.textContent = 'STABLE';
+            statusElement.className = '';
+        } else if (prosperity > 0.2) {
+            statusElement.textContent = 'DECLINING';
+            statusElement.className = 'declining';
         } else {
-            document.getElementById('ritual-health').textContent = 'ACTIVE';
-            document.getElementById('ritual-health').className = '';
-        }
-    }
-
-    applyRumorSpread(value) {
-        // High rumor = clustering behavior
-        const clusterFactor = value / 100;
-        this.inhabitants.forEach(inhabitant => {
-            if (clusterFactor > 0.6 && Math.random() < 0.1) {
-                inhabitant.behavior = 'gather';
-            }
-        });
-    }
-
-    applySocietalTolerance(value) {
-        // Stored for collision handling
-        this.societalTolerance = value / 100;
-    }
-
-    applyInnovationPace(value) {
-        // Color and style changes
-        if (Math.random() < value / 1000) {
-            this.buildings.forEach(building => {
-                const hue = Math.random();
-                building.mesh.material.color.setHSL(hue, 0.7, 0.5);
-            });
-        }
-    }
-
-    applyClimateThreat(value) {
-        // Environmental effects
-        const threatLevel = value / 100;
-
-        // Sky darkening
-        const baseSky = this.parsedConfig.climate.sky;
-        const darkFactor = 1 - threatLevel * 0.6;
-        const r = ((baseSky >> 16) & 0xff) * darkFactor;
-        const g = ((baseSky >> 8) & 0xff) * darkFactor;
-        const b = (baseSky & 0xff) * darkFactor;
-        this.scene.background.setRGB(r / 255, g / 255, b / 255);
-
-        // Panic behavior
-        if (threatLevel > 0.7) {
-            this.inhabitants.forEach(inhabitant => {
-                if (Math.random() < 0.3) {
-                    inhabitant.behavior = 'shelter';
-                }
-            });
-        }
-
-        // Camera shake (subtle)
-        if (threatLevel > 0.8) {
-            this.camera.position.x += (Math.random() - 0.5) * 0.1;
-            this.camera.position.y += (Math.random() - 0.5) * 0.1;
-        }
-    }
-
-    applyBorderOpenness(value) {
-        const openness = value / 100;
-
-        // Remove existing walls
-        this.walls.forEach(wall => this.scene.remove(wall.mesh));
-        this.walls = [];
-
-        // Create walls if closed
-        if (openness < 0.5) {
-            const wallCount = 5;
-            const wallHeight = 2 * (1 - openness);
-            const wallOpacity = 1 - openness;
-
-            for (let i = 0; i < wallCount; i++) {
-                const angle = (i / wallCount) * Math.PI * 2;
-                const radius = 18;
-
-                const wallGeometry = new THREE.BoxGeometry(8, wallHeight, 0.3);
-                const wallMaterial = new THREE.MeshPhongMaterial({
-                    color: this.parsedConfig.colors.primary,
-                    transparent: true,
-                    opacity: wallOpacity,
-                    emissive: this.parsedConfig.colors.primary,
-                    emissiveIntensity: 0.3
-                });
-                const wall = new THREE.Mesh(wallGeometry, wallMaterial);
-                wall.position.set(
-                    Math.cos(angle) * radius,
-                    wallHeight / 2,
-                    Math.sin(angle) * radius
-                );
-                wall.rotation.y = angle;
-
-                this.walls.push({ mesh: wall });
-                this.scene.add(wall);
-            }
+            statusElement.textContent = 'COLLAPSING';
+            statusElement.className = 'collapsing';
         }
     }
 
     // ========================================
-    // ANIMATION AND SIMULATION
+    // ANIMATION LOOP
     // ========================================
 
     animateWorld() {
         this.controls.update();
 
+        // Time update
+        this.updateSimulationTime(1/60);
+
+        // Apply slider effects
+        this.applySliderEffects();
+
         // Update inhabitants
         this.updateInhabitants();
+
+        // Update buildings (growth/decay)
+        this.updateBuildings();
 
         // Update stats
         this.updateStats();
@@ -671,262 +819,64 @@ class CivilizationIncubator3D {
     }
 
     updateInhabitants() {
-        const values = this.getSliderValues();
+        const multipliers = [0, 1, 10, 100];
+        const speedMultiplier = multipliers[this.timeScale];
 
-        this.inhabitants.forEach((inhabitant, i) => {
-            if (inhabitant.performingRitual) {
-                // Ritual animation
-                inhabitant.ritualTimer -= 0.016;
-                const scale = 1 + Math.sin(inhabitant.ritualTimer * 10) * 0.1;
-                inhabitant.mesh.scale.y = scale;
+        this.inhabitants.forEach((inh, i) => {
+            if (!inh.alive) return;
 
-                if (inhabitant.ritualTimer <= 0) {
-                    inhabitant.performingRitual = false;
-                    inhabitant.mesh.scale.y = 1;
-                }
-                return;
+            // Movement
+            inh.mesh.position.add(inh.velocity.clone().multiplyScalar(speedMultiplier));
+
+            // Random direction change
+            if (Math.random() < 0.01) {
+                inh.velocity.x += (Math.random() - 0.5) * 0.02;
+                inh.velocity.z += (Math.random() - 0.5) * 0.02;
+                inh.velocity.clampLength(0, 0.1);
             }
-
-            // Behavior-based movement
-            switch (inhabitant.behavior) {
-                case 'gather':
-                    // Move towards center
-                    const toCenter = new THREE.Vector3(0, 0, 0)
-                        .sub(inhabitant.mesh.position)
-                        .normalize()
-                        .multiplyScalar(0.05);
-                    inhabitant.velocity.lerp(toCenter, 0.1);
-                    break;
-
-                case 'flee':
-                    // Move outward
-                    const fromCenter = inhabitant.mesh.position.clone()
-                        .normalize()
-                        .multiplyScalar(0.08);
-                    inhabitant.velocity.lerp(fromCenter, 0.1);
-                    break;
-
-                case 'shelter':
-                    // Move to nearest building
-                    if (!inhabitant.targetPosition && this.buildings.length > 0) {
-                        const nearest = this.buildings.reduce((prev, curr) => {
-                            const d1 = prev.mesh.position.distanceTo(inhabitant.mesh.position);
-                            const d2 = curr.mesh.position.distanceTo(inhabitant.mesh.position);
-                            return d1 < d2 ? prev : curr;
-                        });
-                        inhabitant.targetPosition = nearest.mesh.position.clone();
-                    }
-                    if (inhabitant.targetPosition) {
-                        const toTarget = inhabitant.targetPosition.clone()
-                            .sub(inhabitant.mesh.position)
-                            .normalize()
-                            .multiplyScalar(0.06);
-                        inhabitant.velocity.lerp(toTarget, 0.2);
-                    }
-                    break;
-
-                default: // wander
-                    if (Math.random() < 0.01) {
-                        inhabitant.velocity.x += (Math.random() - 0.5) * 0.05;
-                        inhabitant.velocity.z += (Math.random() - 0.5) * 0.05;
-                    }
-                    inhabitant.velocity.multiplyScalar(0.98);
-            }
-
-            // Apply stress to movement
-            const stressFactor = 1 + inhabitant.stress;
-            inhabitant.velocity.multiplyScalar(stressFactor);
-
-            // Move
-            inhabitant.mesh.position.add(inhabitant.velocity);
 
             // Keep on island
             const distFromCenter = Math.sqrt(
-                inhabitant.mesh.position.x ** 2 +
-                inhabitant.mesh.position.z ** 2
+                inh.mesh.position.x ** 2 + inh.mesh.position.z ** 2
             );
             if (distFromCenter > 23) {
-                const angle = Math.atan2(
-                    inhabitant.mesh.position.z,
-                    inhabitant.mesh.position.x
-                );
-                inhabitant.mesh.position.x = Math.cos(angle) * 23;
-                inhabitant.mesh.position.z = Math.sin(angle) * 23;
-                inhabitant.velocity.multiplyScalar(-0.5);
+                const angle = Math.atan2(inh.mesh.position.z, inh.mesh.position.x);
+                inh.mesh.position.x = Math.cos(angle) * 23;
+                inh.mesh.position.z = Math.sin(angle) * 23;
+                inh.velocity.multiplyScalar(-0.5);
             }
 
             // Face movement direction
-            if (inhabitant.velocity.length() > 0.01) {
-                const angle = Math.atan2(inhabitant.velocity.x, inhabitant.velocity.z);
-                inhabitant.mesh.rotation.y = angle;
+            if (inh.velocity.length() > 0.01) {
+                const angle = Math.atan2(inh.velocity.x, inh.velocity.z);
+                inh.mesh.rotation.y = angle;
             }
-
-            // Check collisions and interactions
-            for (let j = i + 1; j < this.inhabitants.length; j++) {
-                const other = this.inhabitants[j];
-                const dist = inhabitant.mesh.position.distanceTo(other.mesh.position);
-
-                if (dist < 1.5) {
-                    // Interaction based on tolerance
-                    if (Math.random() > this.societalTolerance) {
-                        // Destructive
-                        inhabitant.health *= 0.99;
-                        other.health *= 0.99;
-                        inhabitant.velocity.multiplyScalar(-1);
-                        other.velocity.multiplyScalar(-1);
-                    } else {
-                        // Cooperative
-                        inhabitant.health = Math.min(1, inhabitant.health + 0.001);
-                        other.health = Math.min(1, other.health + 0.001);
-                    }
-                }
-            }
-
-            // Health-based opacity
-            inhabitant.mesh.material.opacity = inhabitant.health;
         });
-
-        // Random behavior reset
-        if (Math.random() < 0.002) {
-            this.inhabitants.forEach(inhabitant => {
-                inhabitant.behavior = 'wander';
-                inhabitant.targetPosition = null;
-            });
-        }
     }
 
-    startRitualTimer() {
-        setInterval(() => {
-            const values = this.getSliderValues();
-
-            // Don't perform ritual if life is too difficult
-            if (values.lifeDifficulty > 90) return;
-
-            this.inhabitants.forEach(inhabitant => {
-                inhabitant.performingRitual = true;
-                inhabitant.ritualTimer = 2; // 2 seconds
-            });
-        }, this.ritualInterval * 1000);
+    updateBuildings() {
+        this.buildings.forEach(building => {
+            // Gradual growth/decay
+            if (Math.abs(building.mesh.scale.y - building.targetHeight / building.originalHeight) > 0.01) {
+                building.mesh.scale.y += building.growthRate;
+                building.mesh.position.y = (building.mesh.scale.y * building.originalHeight) / 2;
+            }
+        });
     }
 
     updateStats() {
-        const living = this.inhabitants.filter(i => i.health > 0.3).length;
-        const survivalRate = (living / this.inhabitantCount * 100).toFixed(1);
-        const avgHealth = this.inhabitants.reduce((sum, i) => sum + i.health, 0) / this.inhabitants.length;
-        const stability = (avgHealth * 100).toFixed(0);
+        const alive = this.inhabitants.filter(i => i.alive).length;
+        document.getElementById('population').textContent = alive;
 
-        document.getElementById('population').textContent = living;
-        document.getElementById('survival-rate').textContent = `${survivalRate}%`;
-        document.getElementById('stability').textContent = `${stability}%`;
-    }
+        const buildingCount = this.buildings.filter(b => b.mesh.scale.y > 0.5).length;
+        document.getElementById('buildings').textContent = buildingCount;
 
-    startSimulationTimer() {
-        setInterval(() => {
-            const elapsed = Date.now() - this.simulationStartTime;
-            const minutes = Math.floor(elapsed / 60000);
-            const seconds = Math.floor((elapsed % 60000) / 1000);
-            document.getElementById('simulation-time').textContent =
-                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }, 1000);
+        const avgHealth = this.inhabitants.filter(i => i.alive).reduce((sum, i) => sum + i.health, 0) / alive;
+        document.getElementById('stability').textContent = `${Math.round(avgHealth * 100)}%`;
     }
 
     // ========================================
-    // PHASE 3: FINAL REPORT
-    // ========================================
-
-    freezeSimulation() {
-        cancelAnimationFrame(this.animationId);
-        this.showFinalReport();
-    }
-
-    showFinalReport() {
-        this.switchPhase('final-report');
-
-        // Display initial configuration
-        const configDiv = document.getElementById('initial-config');
-        configDiv.innerHTML = `
-            <p><strong>Civilization Name:</strong> ${this.config.name}</p>
-            <p><strong>Greatest Fear:</strong> ${this.config.fear}</p>
-            <p><strong>Core Aesthetic:</strong> ${this.config.aesthetic}</p>
-            <p><strong>Sacred Ritual:</strong> ${this.config.ritual}</p>
-        `;
-
-        // Display final slider settings
-        const values = this.getSliderValues();
-        const slidersDiv = document.getElementById('final-sliders');
-        slidersDiv.innerHTML = `
-            <p><strong>Life Difficulty:</strong> ${values.lifeDifficulty}%</p>
-            <p><strong>Rumor Spread:</strong> ${values.rumorSpread}%</p>
-            <p><strong>Societal Tolerance:</strong> ${values.societalTolerance}%</p>
-            <p><strong>Innovation Pace:</strong> ${values.innovationPace}%</p>
-            <p><strong>Climate Threat:</strong> ${values.climateThreat}%</p>
-            <p><strong>Border Openness:</strong> ${values.borderOpenness}%</p>
-        `;
-
-        // Generate outcome analysis
-        this.generateOutcomeAnalysis(values);
-
-        // Draw final snapshot
-        this.drawFinalSnapshot();
-
-        // Restart button
-        document.getElementById('restart-btn').addEventListener('click', () => {
-            location.reload();
-        });
-    }
-
-    generateOutcomeAnalysis(values) {
-        const living = this.inhabitants.filter(i => i.health > 0.3).length;
-        const survivalRate = (living / this.inhabitantCount * 100);
-        const avgHealth = this.inhabitants.reduce((sum, i) => sum + i.health, 0) / this.inhabitants.length;
-
-        const analysisDiv = document.getElementById('outcome-analysis');
-
-        let verdict = '';
-        if (survivalRate > 80 && avgHealth > 0.7) {
-            verdict = `<p><strong>Outcome: THRIVING CIVILIZATION</strong></p>
-                <p>Your divine decree created favorable conditions. The ${this.config.name} have flourished under your guidance,
-                with ${survivalRate.toFixed(1)}% survival rate and strong social cohesion.</p>`;
-        } else if (survivalRate > 50) {
-            verdict = `<p><strong>Outcome: STRUGGLING SURVIVAL</strong></p>
-                <p>The ${this.config.name} persist, but face significant challenges. Your interventions created
-                a precarious balance between growth and decline (${survivalRate.toFixed(1)}% survival).</p>`;
-        } else {
-            verdict = `<p><strong>Outcome: CIVILIZATION COLLAPSE</strong></p>
-                <p>Your interventions proved too harsh for the ${this.config.name}. With only ${survivalRate.toFixed(1)}%
-                surviving, the culture teeters on the brink of extinction.</p>`;
-        }
-
-        const extremeFactors = [];
-        if (values.lifeDifficulty > 75) extremeFactors.push('extreme hardship');
-        if (values.climateThreat > 75) extremeFactors.push('environmental disasters');
-        if (values.societalTolerance < 25) extremeFactors.push('internal conflict');
-        if (values.borderOpenness < 25) extremeFactors.push('isolation');
-
-        let factorsText = '';
-        if (extremeFactors.length > 0) {
-            factorsText = `<p><strong>Critical Factors:</strong> Your civilization faced ${extremeFactors.join(', ')}.</p>`;
-        }
-
-        analysisDiv.innerHTML = verdict + factorsText + `
-            <p><strong>Cultural Legacy:</strong> ${this.config.ritual}</p>
-            <p>This sacred ritual ${values.lifeDifficulty > 90 ? 'was abandoned due to extreme hardship' : 'remains the cornerstone of their identity'}.</p>
-        `;
-    }
-
-    drawFinalSnapshot() {
-        const canvas = document.getElementById('final-snapshot');
-        const ctx = canvas.getContext('2d');
-
-        // Render current 3D scene to snapshot
-        this.renderer.render(this.scene, this.camera);
-
-        // Copy WebGL canvas to 2D canvas
-        ctx.drawImage(this.renderer.domElement, 0, 0, canvas.width, canvas.height);
-    }
-
-    // ========================================
-    // UTILITY FUNCTIONS
+    // UTILITY
     // ========================================
 
     switchPhase(phaseId) {
@@ -937,7 +887,7 @@ class CivilizationIncubator3D {
     }
 }
 
-// Initialize application
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    new CivilizationIncubator3D();
+    new AcceleratedCivilization();
 });
