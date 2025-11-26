@@ -400,6 +400,8 @@ class CivilizationAccelerator {
     }
 
     initMainCanvas() {
+        console.log('Initializing main canvas...');
+
         // Show loading overlay initially
         const loadingOverlay = document.getElementById('loading-overlay');
         loadingOverlay.classList.remove('hidden');
@@ -408,12 +410,17 @@ class CivilizationAccelerator {
         const container = document.getElementById('sim-container');
         const canvas = document.createElement('canvas');
         canvas.id = 'main-canvas';
-        container.appendChild(canvas);
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.display = 'block';
+        container.insertBefore(canvas, loadingOverlay);
+
+        console.log('Canvas created and appended');
 
         // Create NEW Three.js scene for main simulation
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x000428);
-        scene.fog = new THREE.Fog(0x000428, 50, 200);
+        scene.background = new THREE.Color(0x1a1a2e);
+        scene.fog = new THREE.Fog(0x1a1a2e, 50, 200);
 
         // Camera positioned at 3/4 angled top-down view
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -421,10 +428,17 @@ class CivilizationAccelerator {
         camera.lookAt(0, 0, 0);
 
         // Create renderer
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias: true,
+            alpha: false
+        });
+        renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        console.log('Renderer created');
 
         // OrbitControls with limited angle (cannot go below ground)
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -434,12 +448,13 @@ class CivilizationAccelerator {
         controls.minDistance = 10;
         controls.maxDistance = 100;
         controls.target.set(0, 0, 0);
+        controls.update();
 
         // Lighting - ambient + directional
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
         scene.add(ambientLight);
 
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
         dirLight.position.set(50, 50, 30);
         dirLight.castShadow = true;
         dirLight.shadow.camera.left = -50;
@@ -452,19 +467,27 @@ class CivilizationAccelerator {
 
         this.mainScene = { scene, camera, renderer, controls };
 
+        console.log('Creating world...');
+
         // Create world immediately
         this.createTerrain();
         this.createWater();
         this.createBuildings();
         this.createNPCs();
 
+        console.log('World created, starting animation');
+
         // Start animation loop
         this.isSimulationRunning = true;
         this.animate();
 
+        // Force initial render
+        renderer.render(scene, camera);
+
         // Hide loading after 2 seconds
         setTimeout(() => {
             loadingOverlay.classList.add('hidden');
+            console.log('Loading hidden, scene should be visible');
         }, 2000);
 
         // Handle resize
