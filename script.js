@@ -349,38 +349,59 @@ class CivilizationAccelerator {
     }
 
     initMainCanvas() {
-        const canvas = document.getElementById('main-canvas');
+        // Show loading overlay initially
+        const loadingOverlay = document.getElementById('loading-overlay');
+        loadingOverlay.classList.remove('hidden');
+
+        // Create new canvas and append to container
+        const container = document.getElementById('sim-container');
+        const canvas = document.createElement('canvas');
+        canvas.id = 'main-canvas';
+        container.appendChild(canvas);
+
+        // Create NEW Three.js scene for main simulation
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000428);
         scene.fog = new THREE.Fog(0x000428, 50, 200);
 
+        // Camera positioned at 3/4 angled top-down view
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(30, 25, 30);
+        camera.lookAt(0, 0, 0);
 
+        // Create renderer
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        // OrbitControls
+        // OrbitControls with limited angle (cannot go below ground)
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.maxPolarAngle = Math.PI / 2.2;
+        controls.maxPolarAngle = Math.PI / 2.2; // Prevent going below horizon
+        controls.minDistance = 10;
+        controls.maxDistance = 100;
+        controls.target.set(0, 0, 0);
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        // Lighting - ambient + directional
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
 
         const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
         dirLight.position.set(50, 50, 30);
         dirLight.castShadow = true;
+        dirLight.shadow.camera.left = -50;
+        dirLight.shadow.camera.right = 50;
+        dirLight.shadow.camera.top = 50;
+        dirLight.shadow.camera.bottom = -50;
         dirLight.shadow.mapSize.width = 2048;
         dirLight.shadow.mapSize.height = 2048;
         scene.add(dirLight);
 
         this.mainScene = { scene, camera, renderer, controls };
 
-        // Create world
+        // Create world immediately
         this.createTerrain();
         this.createWater();
         this.createBuildings();
@@ -389,6 +410,11 @@ class CivilizationAccelerator {
         // Start animation loop
         this.isSimulationRunning = true;
         this.animate();
+
+        // Hide loading after 2 seconds
+        setTimeout(() => {
+            loadingOverlay.classList.add('hidden');
+        }, 2000);
 
         // Handle resize
         window.addEventListener('resize', () => {
