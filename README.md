@@ -1,207 +1,407 @@
-# The Chrono-Cultural Incubator - 3D God Mode
+# The Chrono-Cultural Incubator - Accelerated Evolution
 
-**Text-to-World 3D Civilization Simulator**
+**Interactive 3D Civilization Simulator with Time Control and Crisis Injection**
 
-A high-fidelity interactive 3D web experience where you act as the **Divine Creator** of a new civilization. Define your culture through text, then observe and intervene in its real-time 3D evolution.
+A high-fidelity interactive 3D web experience where you act as the **Divine Observer** of ancient civilizations. Select from pre-defined civilization archetypes, then manipulate time itself and inject catastrophic events to test their resilience.
 
-**Core Concept:** Your subjective interpretation of a culture (expressed through text) becomes the literal physical and social laws governing a 3D micro-society island.
+**Core Concept:** Choose a civilization archetype with unique environmental and social characteristics, then observe how they evolve through accelerated time while you intervene with real-time parameter adjustments and crisis events.
 
 ---
 
 ## 🌍 Overview
 
-This is a two-phase God Mode simulator:
+This is a two-phase accelerated simulation system:
 
-1. **Phase 1 - Genesis Configuration**: Define your civilization through text input
-2. **Phase 2 - Divine Intervention**: Observe your 3D world and manipulate it in real-time
-3. **Phase 3 - Final Judgment**: Analyze whether your civilization thrived or collapsed
-
----
-
-## 📝 Phase 1: Genesis Configuration (Text-to-Code)
-
-**Aesthetic:** Minimalist, clean UI with live 3D preview
-
-### Four Sacred Questions
-
-Answer these prompts to birth your civilization:
-
-**1. What is the name of your civilization?**
-- Displayed as your world title throughout the simulation
-
-**2. Describe your civilization's greatest fear or need**
-- Examples: "survival in perpetual darkness", "constant need for flowing water"
-- **Maps to:** Initial climate, lighting, and Life Difficulty slider
-- **3D Impact:** Sets sky color, fog, environmental lighting
-
-**3. Describe your civilization's core aesthetic**
-- Examples: "polished obsidian and crimson silk", "crystalline structures with golden accents"
-- **Maps to:** Color palette for inhabitants and buildings
-- **3D Impact:** Determines visual appearance of all structures and people
-
-**4. Define your civilization's unique daily ritual**
-- Examples: "Every hour they must raise their hands to the sky", "They bow when two meet"
-- **Maps to:** Periodic animation loop for all inhabitants
-- **3D Impact:** Animated behavior performed every 60 seconds
+1. **Phase 1 - Archetype Selection**: Choose from 6 pre-defined civilization types with 3D preview
+2. **Phase 2 - Accelerated Simulation**: Control time flow (PAUSE/1x/10x/100x) and inject crisis events while observing 3D evolution
 
 ---
 
-## 🎮 Phase 2: 3D Incubation (God Mode)
+## 🏛️ Phase 1: Archetype Selection
 
-**Aesthetic:** High-tech holographic control panel surrounding a living 3D island
+**Aesthetic:** Holographic preview system with real-time 3D rendering
+
+### Six Civilization Archetypes
+
+Each archetype comes with pre-configured environmental parameters and unique visual characteristics:
+
+#### 🏜️ Desert Nomads
+- **Description:** Hardy survivors adapted to harsh desert conditions
+- **Difficulty:** High (75%)
+- **Key Traits:** High mobility, resource scarcity, strong trade networks
+- **Visual Theme:** Sandy browns and warm oranges
+- **Starting Conditions:** Dry climate, high environmental stress
+
+#### ⛰️ Mountain Farmers
+- **Description:** Isolated highland dwellers with terraced agriculture
+- **Isolation:** High
+- **Key Traits:** Self-sufficiency, defensive positioning, slow cultural change
+- **Visual Theme:** Stone grays and earthy greens
+- **Starting Conditions:** Cool climate, stable but isolated
+
+#### 🌊 Coastal Traders
+- **Description:** Maritime culture focused on commerce and innovation
+- **Innovation:** High (70%)
+- **Key Traits:** Open borders, rapid cultural exchange, naval technology
+- **Visual Theme:** Ocean blues and sandy whites
+- **Starting Conditions:** Moderate climate, high external contact
+
+#### 🌲 Forest Dwellers
+- **Description:** Woodland society with balanced sustainable practices
+- **Stability:** High
+- **Key Traits:** Medium all parameters, ecological harmony
+- **Visual Theme:** Forest greens and natural browns
+- **Starting Conditions:** Temperate climate, balanced ecosystem
+
+#### 🐎 Steppe Warriors
+- **Description:** Nomadic horse culture with aggressive expansion
+- **Tolerance:** Low (35%)
+- **Key Traits:** High mobility, military focus, rapid rumor spread
+- **Visual Theme:** Grassland yellows and warrior reds
+- **Starting Conditions:** Open plains, expansionist pressure
+
+#### 🏛️ River Civilization
+- **Description:** Advanced hydraulic society with organized governance
+- **Difficulty:** Low (30%)
+- **Key Traits:** Agricultural surplus, high innovation, complex hierarchy
+- **Visual Theme:** Fertile greens and architectural whites
+- **Starting Conditions:** Rich environment, rapid development
+
+### 3D Preview System
+
+- **Hover** over any archetype card to see 3D preview
+- **Click** to select and confirm your civilization
+- **Preview Canvas** shows real-time 3D rendering of:
+  - Terrain with archetype-specific colors
+  - Sample buildings matching visual theme
+  - Environmental lighting based on climate
+  - 10-second automated preview at 100x speed after selection
+
+---
+
+## ⏱️ Phase 2: Accelerated Simulation
+
+**Aesthetic:** Command center interface with holographic 3D island view
 
 ### The 3D World
 
-Your text inputs generate:
-- **Island Terrain**: Circular island with beach and surrounding ocean
-- **30 Inhabitants**: Animated 3D characters in your chosen color scheme
-- **8 Buildings**: Structures matching your aesthetic
-- **40 Vegetation**: Trees that respond to environmental stress
-- **Dynamic Borders**: Walls that appear/dissolve based on openness
+Your selected archetype generates a complete living civilization:
+
+- **Circular Island Terrain**: 50-unit diameter landmass with beach and ocean
+- **30 Inhabitants**: Animated 3D characters in archetype-specific colors
+- **8 Buildings**: Structures that grow/shrink based on prosperity
+- **40 Trees**: Vegetation responding to environmental stress
+- **Dynamic Water Level**: Rises during flood events
+- **Enemy Spawns**: Appear during war events
+
+### Chrono-Controller - Time Manipulation
+
+**Time Scale Slider** (4 settings):
+- **PAUSE** (0x): Freeze all simulation
+- **1x SPEED**: Real-time observation
+- **10x SPEED**: Accelerated month progression
+- **100x ACCELERATED**: Rapid evolution view
+
+**Time Display:**
+- **YEAR**: 0000-9999 (zero-padded)
+- **MONTH**: 01-12
+- **Accurate accumulator**: Precise time tracking at all speeds
+
+**Era Progression:**
+- **EARLY SETTLEMENT** (Year 0-50)
+- **GROWTH** (Year 50-150)
+- **ESTABLISHED** (Year 150-300)
+- **ADVANCED** (Year 300+)
 
 ### Camera Controls
 
-- **Drag** to rotate camera
+- **Drag** to rotate around island
 - **Scroll** to zoom in/out
-- **Auto-orbit** around your civilization
+- **OrbitControls** for smooth navigation
+- View updates at all time scales
 
-### Live Statistics
+---
 
-**POPULATION** - Number of living inhabitants (health > 30%)
-**SURVIVAL RATE** - Percentage of original population still alive
-**STABILITY** - Average health of all inhabitants
+## 💥 Crisis Injection System
 
-**CORE RITUAL STATUS** - Active / Degraded / Failed
-- Degrades when Life Difficulty > 75%
-- Fails when Life Difficulty > 90%
+### 🌊 THE DELUGE - Catastrophic Flood
+
+**Event Duration:** 3 seconds
+
+**Visual Effects:**
+- Water level rises from 0.2 to 1.5 units
+- Animated blue expanding plane
+- Buildings partially submerged
+
+**Behavioral Impact:**
+- All inhabitants panic and flee toward higher ground
+- Movement speed increases dramatically
+- Health decreases for those caught in water
+- Population loss: 10-30%
+
+**Recovery:**
+- Water recedes gradually over 10 seconds
+- Survivors resume normal behavior
+- Buildings remain damaged (lower heights)
+
+### ☠️ THE PLAGUE - Deadly Disease
+
+**Event Duration:** 5-10 seconds (cascading)
+
+**Visual Effects:**
+- Infected inhabitants turn sick green (0x88ff00)
+- Progressive infection spread through population
+- Fade-out animations for deceased
+
+**Behavioral Impact:**
+- Infects up to 40% of population randomly
+- Each infected dies after 2 seconds
+- Cascading spread at 500ms intervals
+- No immunity or recovery
+
+**Long-term Effects:**
+- Permanent population reduction
+- Lowers survival rate statistics
+- Affects prosperity calculations
+
+### ⚔️ NEIGHBOR'S WAR - External Threat
+
+**Event Duration:** 8 seconds (attack sequence)
+
+**Visual Effects:**
+- 10 enemy units spawn at island edge (red color: 0xff0000)
+- Marching animation toward settlement center
+- Collision-based combat
+
+**Behavioral Impact:**
+- Inhabitants flee or fight based on tolerance
+- Health decreases during enemy encounters
+- Buildings may be damaged in crossfire
+- Population loss: 15-35%
+
+**Aftermath:**
+- Enemy units despawn after 8 seconds
+- Survivors return to normal behavior
+- Border openness may decrease automatically
 
 ---
 
 ## 🎚️ The God Controller - 6 Real-Time Intervention Sliders
 
-### 1. LIFE DIFFICULTY RATING (Easy ← → Harsh)
+### 1. LIFE DIFFICULTY (Easy ← → Harsh)
 
-**Initial Value:** Set by your "greatest fear" response
-
-**Real-Time Impact:**
-- **Vegetation**: Trees wither and shrink
-- **Inhabitants**: Move erratically, health decreases
-- **Ritual**: Degrades at 75%, fails at 90%
-- **Visual**: Green fades to brown/grey
-
-### 2. RUMOR SPREAD INTENSITY (Controlled ← → Chaotic)
+**Range:** 0-100%
 
 **Real-Time Impact:**
-- **High**: Inhabitants gather in agitated clusters
-- **Behavior**: Communication breaks down
-- **Movement**: Non-productive grouping at center
-- **Social**: Decisions become irrational
+- **< 30%**: Vegetation flourishes (bright green, full size)
+- **30-60%**: Moderate environment
+- **60-75%**: Trees wither (brown tones, 70% size)
+- **> 75%**: Extreme hardship (gray, 40% size)
 
-### 3. SOCIETAL TOLERANCE LEVEL (Low ← → High)
+**Behavioral Effects:**
+- High difficulty → erratic movement patterns
+- Health decreases faster
+- Ritual performance degrades
 
-**Real-Time Impact:**
-- **Low**: Collisions trigger destructive interactions (health loss, repulsion)
-- **High**: Collisions trigger cooperative behavior (health gain, resource sharing)
-- **Visual**: Conflict vs collaboration animations
+**Prosperity Calculation:**
+- Lower difficulty = higher prosperity = taller buildings
 
-### 4. PACE OF TREND/INNOVATION (Static ← → Rapid)
+### 2. RUMOR SPREAD (Controlled ← → Chaotic)
 
-**Real-Time Impact:**
-- **High**: Buildings rapidly change colors and styles
-- **Architecture**: Temporary structures appear and vanish
-- **Cultural**: Visual aesthetic evolution
-- **Clothing**: Inhabitant colors shift
-
-### 5. CLIMATE/DISASTER THREAT (Calm ← → Extreme)
+**Range:** 0-100%
 
 **Real-Time Impact:**
-- **Sky**: Darkens progressively
-- **Weather**: Fog and atmospheric effects
-- **Behavior**: Inhabitants panic and seek shelter
-- **Camera**: Subtle shake simulating tremors
-- **Environment**: Visual instability
+- **< 40%**: Normal dispersed movement
+- **40-60%**: Occasional clustering
+- **> 60%**: GATHER behavior activates
+  - All inhabitants move toward island center
+  - Form agitated clusters
+  - Non-productive grouping
 
-### 6. BORDER OPENNESS LEVEL (Closed ← → Open)
+**Social Effects:**
+- High spread → information chaos
+- Decision-making becomes irrational
+- Trust erodes between groups
+
+### 3. SOCIETAL TOLERANCE (Conflict ← → Cooperation)
+
+**Range:** 0-100%
 
 **Real-Time Impact:**
-- **< 50%**: Translucent walls appear between groups
-- **Wall Height**: Scales with closure (higher = more closed)
-- **> 50%**: Walls dissolve completely
-- **Movement**: Cross-group exchange increases
-- **Isolation**: Groups merge or separate
+- **< 30%**: CONFLICT MODE
+  - Collisions cause health loss (-5% per contact)
+  - Inhabitants repel away from each other
+  - Red flash on collision
+- **> 70%**: COOPERATION MODE
+  - Collisions grant health (+3% per contact)
+  - Resource sharing animations
+  - Green glow on contact
+
+**Long-term Effects:**
+- Low tolerance → population decline through attrition
+- High tolerance → population stability
+
+### 4. INNOVATION PACE (Static ← → Dynamic)
+
+**Range:** 0-100%
+
+**Real-Time Impact:**
+- **< 30%**: Buildings remain static original colors
+- **30-60%**: Occasional color shifts
+- **> 60%**: RAPID EVOLUTION MODE
+  - Buildings change colors every 2 seconds
+  - Temporary structures appear/vanish
+  - Clothing colors shift on inhabitants
+
+**Prosperity Calculation:**
+- Higher innovation = higher prosperity = building growth
+
+### 5. CLIMATE THREAT (Calm ← → Extreme)
+
+**Range:** 0-100%
+
+**Real-Time Impact:**
+- **< 40%**: Clear skies, normal lighting
+- **40-70%**: Atmospheric fog increases
+- **> 70%**: SHELTER behavior activates
+  - Sky darkens significantly
+  - Inhabitants panic and seek buildings
+  - Camera shake effect (tremor simulation)
+
+**Environmental Effects:**
+- High threat → darker scene
+- Fog density increases
+- Inhabitants cluster near structures
+
+### 6. BORDER OPENNESS (Closed ← → Open)
+
+**Range:** 0-100%
+
+**Real-Time Impact:**
+- **< 50%**: ISOLATION MODE
+  - Translucent walls appear (0x888888, 50% opacity)
+  - Wall height = (50 - openness) / 10
+  - Movement restricted between zones
+- **> 50%**: OPEN BORDERS
+  - Walls dissolve completely
+  - Free cross-group movement
+  - Cultural exchange enabled
+
+**Social Structure:**
+- Low openness → segregated groups
+- High openness → unified society
 
 ---
 
-## 🏛️ Inhabitant Behaviors
+## 📊 Live Statistics Display
 
-Your 3D inhabitants exhibit complex AI behaviors:
+### Top Bar Metrics
+
+**POPULATION**: Real-time count of living inhabitants (health > 30%)
+
+**BUILDINGS**: Number of standing structures
+
+**STABILITY**: Average health percentage of all inhabitants
+- **100%**: Perfect health (green)
+- **70-99%**: Good health (light green)
+- **40-69%**: Moderate health (yellow)
+- **< 40%**: Critical health (red)
+
+### Civilization Status
+
+**Prosperity Formula:**
+```javascript
+prosperity = (100 - Life Difficulty + Innovation Pace) / 200
+```
+
+**Status Levels:**
+- **THRIVING** (prosperity > 0.7): Green text, growing buildings
+- **STABLE** (prosperity 0.4-0.7): White text, stable buildings
+- **DECLINING** (prosperity 0.2-0.4): Yellow text, shrinking buildings
+- **COLLAPSING** (prosperity < 0.2): Red text, minimal structures
+
+---
+
+## 🏗️ Dynamic Building System
+
+### Building Growth/Decay
+
+**Target Height Calculation:**
+```javascript
+targetHeight = originalHeight * (0.5 + prosperity * 1.5)
+```
+
+**Growth Rate:**
+- Interpolates at 1% per frame toward target height
+- Smooth transitions (no jarring jumps)
+- Y-position automatically adjusts with scale
+
+**Visual Effects:**
+- **Thriving**: Buildings grow to 2x original height
+- **Collapsing**: Buildings shrink to 50% original height
+- **Material**: Emissive glow based on innovation pace
+
+---
+
+## 🤖 Inhabitant AI Behaviors
 
 ### Behavior States
 
 **WANDER** (Default)
-- Random exploration of the island
-- Occasional direction changes
+- Random exploration within island boundaries
+- Occasional direction changes (1% per frame)
+- Speed: 0.05 units/frame at 1x speed
 
 **GATHER** (Rumor Spread > 60%)
-- Move toward center of island
-- Form clusters
-- Non-productive grouping
+- Move toward island center (0, 0, 0)
+- Cluster formation
+- Agitated movement patterns
 
 **SHELTER** (Climate Threat > 70%)
-- Panic response
-- Seek nearest building
-- Huddled behavior
+- Pathfind to nearest building
+- Panic speed increase
+- Huddled behavior near structures
 
 **RITUAL** (Every 60 seconds, if Life Difficulty < 90%)
-- All inhabitants pause
-- Perform synchronized animation
+- All inhabitants pause simultaneously
+- Y-axis bounce animation (sine wave)
 - 2-second duration
+- Synchronized cultural performance
 
-### Interaction Mechanics
+### Movement System
 
-**Collisions**:
-- Inhabitants detect proximity (< 1.5 units)
-- **Low Tolerance**: Fight, lose health, repel
-- **High Tolerance**: Cooperate, gain health, share resources
+**Speed Multipliers:**
+- Base speed: 0.05 units/frame
+- 1x time: Normal speed
+- 10x time: 10x faster movement
+- 100x time: 100x faster movement
 
-**Health System**:
-- Visual opacity reflects health (1.0 = solid, 0.1 = transparent)
-- Death occurs at health < 0.3
-- Affects survival rate statistics
+**Boundary Constraints:**
+- Island radius: 23 units
+- Collision detection with edge
+- Velocity reversal on boundary hit
 
----
+**Collision System:**
+- Detection radius: 1.5 units
+- Low tolerance: Health loss, repulsion
+- High tolerance: Health gain, attraction
 
-## 📊 Phase 3: Final Report
+### Health System
 
-Click **FREEZE SIMULATION** to generate your civilization analysis.
+**Health Range:** 0-100%
 
-### Report Sections
+**Visual Representation:**
+- Opacity = health percentage
+- 100% health = fully opaque
+- 30% health = semi-transparent
+- < 30% health = dead (removed from scene)
 
-**1. Initial Genesis Configuration**
-- Your 4 text responses displayed
-
-**2. Final 3D State Snapshot**
-- Rendered image of your final world state
-
-**3. Final God Controller Settings**
-- All 6 slider values at freeze time
-
-**4. Civilization Outcome Analysis**
-
-**Outcomes:**
-- **THRIVING** (> 80% survival, > 70% health)
-- **STRUGGLING** (> 50% survival)
-- **COLLAPSE** (< 50% survival)
-
-**Critical Factors Detected:**
-- Extreme hardship (Life Difficulty > 75%)
-- Environmental disasters (Climate Threat > 75%)
-- Internal conflict (Tolerance < 25%)
-- Isolation (Border Openness < 25%)
-
-**Cultural Legacy:**
-- Analysis of your sacred ritual's survival
-- Whether it remains or was abandoned
+**Health Modifiers:**
+- Life Difficulty: -0.5% per frame at high difficulty
+- Collisions (low tolerance): -5% per contact
+- Collisions (high tolerance): +3% per contact
+- Plague infection: Instant death after 2 seconds
+- War damage: -10% per enemy contact
 
 ---
 
@@ -209,77 +409,151 @@ Click **FREEZE SIMULATION** to generate your civilization analysis.
 
 ### Technologies
 
-- **Three.js (r128)** - 3D rendering engine
-- **OrbitControls** - Camera manipulation
-- **Vanilla JavaScript** - ES6+ class-based architecture
-- **HTML5 Canvas** - Final snapshot rendering
-- **CSS3 Grid** - Responsive layout
+- **Three.js r128**: WebGL 3D rendering engine
+- **OrbitControls**: Camera manipulation library
+- **Vanilla JavaScript**: ES6+ class-based architecture (CivilizationSimulator)
+- **HTML5 Canvas**: 3D rendering target
+- **CSS3 Grid**: Responsive multi-panel layout
+- **Shadow Mapping**: Real-time dynamic shadows
 
-### 3D Assets
+### 3D Asset Generation
 
-**Island**:
-- CylinderGeometry for terrain
-- RingGeometry for beach
-- CircleGeometry for ocean
+**Island Terrain:**
+```javascript
+THREE.CylinderGeometry(25, 25, 0.5, 64)  // Main land
+THREE.RingGeometry(25, 28, 64)           // Beach
+THREE.CircleGeometry(50, 64)             // Ocean
+```
 
-**Inhabitants**:
-- CapsuleGeometry for body (with shadow casting)
-- SphereGeometry for head
-- Custom color from aesthetic parsing
+**Inhabitants:**
+```javascript
+THREE.CapsuleGeometry(0.4, 0.8, 8, 16)   // Body with shadows
+THREE.SphereGeometry(0.3, 16, 16)        // Head
+```
 
-**Buildings**:
-- BoxGeometry with varying heights
-- Emissive materials for glow
-- Shadow casting and receiving
+**Buildings:**
+```javascript
+THREE.BoxGeometry(2, height, 2)          // Variable height
+THREE.MeshStandardMaterial({
+    emissive: color,
+    emissiveIntensity: innovation * 0.01
+})
+```
 
-**Vegetation**:
-- CylinderGeometry trunks
-- ConeGeometry leaves
-- Dynamic scaling based on health
+**Vegetation:**
+```javascript
+THREE.CylinderGeometry(0.1, 0.15, 1.5)   // Trunk
+THREE.ConeGeometry(0.8, 2, 8)            // Leaves
+// Scale based on life difficulty
+```
 
-**Walls**:
-- BoxGeometry barriers
-- Transparent materials
-- Dynamic opacity and height
+**Walls:**
+```javascript
+THREE.BoxGeometry(30, height, 0.5)       // Barrier
+THREE.MeshStandardMaterial({
+    transparent: true,
+    opacity: 0.5
+})
+```
 
-### Text Parsing System
+**Water Level:**
+```javascript
+THREE.CircleGeometry(50, 64)
+position.y = 0.2 (normal) → 1.5 (flood)
+```
 
-**Color Extraction**:
-- Parses 20+ color keywords from aesthetic text
-- Maps to hex values for Three.js materials
-- Examples: "crimson" → 0xdc143c, "jade" → 0x00a86b
+**Enemy Units:**
+```javascript
+THREE.ConeGeometry(0.5, 1.5, 4)          // Aggressive red cones
+```
 
-**Climate Interpretation**:
-- Detects keywords: dark, water, cold, fire
-- Sets sky color, fog, lighting intensity
-- Initializes Life Difficulty (50-75%)
+### Archetype Configuration System
 
-### Animation System
+**Data Structure:**
+```javascript
+{
+    name: String,
+    description: String,
+    colors: {
+        primary: 0xHEXCODE,
+        secondary: 0xHEXCODE,
+        terrain: 0xHEXCODE
+    },
+    climate: {
+        sky: 0xHEXCODE,
+        lighting: 0.0-1.0
+    },
+    parameters: {
+        'life-difficulty': 0-100,
+        'rumor-spread': 0-100,
+        'societal-tolerance': 0-100,
+        'innovation-pace': 0-100,
+        'climate-threat': 0-100,
+        'border-openness': 0-100
+    }
+}
+```
 
-**Ritual Timing**:
-- setInterval at 60-second intervals
-- All inhabitants enter ritual state simultaneously
-- Y-axis scaling animation (sine wave)
-- Auto-exits after 2 seconds
+### Time Accumulator Pattern
 
-**Movement**:
-- Velocity-based physics
-- Island boundary constraints
-- Direction-based rotation
-- Stress-multiplied speed
+**Purpose:** Accurate simulation time tracking at variable speeds
+
+**Implementation:**
+```javascript
+const multipliers = [0, 1, 10, 100];
+const actualDelta = delta * multipliers[timeScale];
+timeAccumulator += actualDelta;
+
+if (timeAccumulator >= 1.0) {
+    simulatedMonth += Math.floor(timeAccumulator);
+    timeAccumulator -= Math.floor(timeAccumulator);
+
+    if (simulatedMonth > 12) {
+        simulatedYear += Math.floor(simulatedMonth / 12);
+        simulatedMonth = simulatedMonth % 12;
+    }
+}
+```
+
+### Event Animation Choreography
+
+**Flood Sequence:**
+1. Show notification overlay (scale animation)
+2. Animate water level rise (3-second lerp)
+3. Trigger panic behavior in all inhabitants
+4. Gradual recede over 10 seconds
+5. Remove notification
+
+**Plague Sequence:**
+1. Show notification overlay
+2. Select random 40% of population
+3. Cascading infection at 500ms intervals
+4. Color change to sick green
+5. Death after 2 seconds per infected
+6. Remove from scene
+
+**War Sequence:**
+1. Show notification overlay
+2. Spawn 10 red enemy units at edge
+3. March toward center over 8 seconds
+4. Collision damage with inhabitants
+5. Despawn all enemies
+6. Remove notification
 
 ---
 
-## 🎯 How to Use
+## 🎮 How to Use
 
-1. **Open** `index.html` in a modern browser
-2. **Fill** all 4 text input fields
-3. **Click** "BEGIN CREATION"
-4. **Observe** your 3D world generate
-5. **Manipulate** the 6 God Controller sliders
-6. **Watch** real-time 3D effects
-7. **Freeze** when satisfied
-8. **Analyze** your civilization's fate
+1. **Open** `index.html` in a modern browser (Chrome/Firefox/Safari 14+)
+2. **Hover** over the 6 archetype cards to preview in 3D
+3. **Click** your chosen civilization to select
+4. **Watch** automated 10-second preview at 100x speed
+5. **Transition** to full simulation view
+6. **Adjust** the 6 intervention sliders in real-time
+7. **Control** time flow with the Chrono-Controller (PAUSE/1x/10x/100x)
+8. **Inject** crisis events (Flood/Plague/War) to test resilience
+9. **Observe** how your civilization adapts and evolves
+10. **Monitor** population, stability, and status metrics
 
 ---
 
@@ -292,56 +566,69 @@ Click **FREEZE SIMULATION** to generate your civilization analysis.
 
 **Requirements:**
 - WebGL 2.0 support
-- ES6 JavaScript
-- CSS Grid
+- ES6 JavaScript (class syntax, arrow functions)
+- CSS Grid support
 - Canvas 2D context
+- Shadow DOM not required
 
 ---
 
 ## 📖 Design Philosophy
 
-### The Power of Text-to-World
+### Archetypal Determinism vs Free Will
 
-Your words become reality:
-- "Darkness" literally dims the sun
-- "Crimson" paints every inhabitant red
-- "Raise hands" becomes their sacred act
+Each civilization begins with fixed environmental and cultural parameters (archetype determinism), but you manipulate these in real-time to explore:
+- Can harsh conditions create resilient societies?
+- Does isolation preserve or destroy culture?
+- Can external crises strengthen or fracture communities?
 
-### Interpretation as Creation
+### The Observer's Dilemma
 
-This simulator makes explicit the subjective nature of cultural understanding:
-- **You interpret** ancient needs through modern text
-- **The system translates** your words into physical laws
-- **The civilization lives** under your interpretation
-- **You discover** if your understanding was life-giving or destructive
+You are both observer and intervener:
+- **Passive observation**: Let time flow and watch natural evolution
+- **Active intervention**: Adjust sliders to guide development
+- **Crisis injection**: Test extreme stress responses
 
-### The Observer Effect
+Can you resist intervening? Should you?
 
-By watching, you inevitably intervene:
-- Can you resist adjusting the sliders?
-- Does observation change the outcome?
-- Are you saving them or playing god?
+### Accelerated Evolution
+
+Time manipulation reveals long-term patterns:
+- 100x speed shows centuries of development in minutes
+- Emergent behaviors only visible at scale
+- Butterfly effect of small parameter changes
+
+### Visual Feedback Loops
+
+Every slider adjustment has immediate visible consequences:
+- Buildings rise and fall with prosperity
+- Inhabitants cluster or disperse based on rumor
+- Walls materialize with isolation
+- Trees wither under hardship
 
 ---
 
 ## 🎓 Educational Applications
 
-- **Anthropology**: Explore how interpretation shapes understanding
-- **Systems Thinking**: See cascading effects of parameter changes
-- **Ethics**: Question the morality of divine intervention
-- **Game Design**: Study emergent behavior from simple rules
-- **Simulation**: Understand agent-based modeling
+- **Systems Thinking**: Observe cascading effects of interconnected parameters
+- **Historical Simulation**: Compare archetype outcomes to real civilizations
+- **Ethics**: Question the morality of god-like intervention
+- **Emergence**: Study complex behaviors from simple rules
+- **Resilience Theory**: Test civilization survival under stress
+- **Cultural Ecology**: Explore environment-culture relationships
 
 ---
 
 ## 🔮 Future Enhancements (Not Implemented)
 
-- Multi-civilization islands with trade
-- Natural language processing for richer text parsing
-- Generative buildings based on architectural descriptions
-- Ritual animation customization from text
-- Time-lapse replay functionality
-- Export 3D models (GLTF/OBJ)
+- **Multi-civilization mode**: Multiple islands with trade and war
+- **Custom archetype creator**: Define your own civilization parameters
+- **Time-lapse recording**: Export video of simulation evolution
+- **More crisis types**: Volcano, meteor, famine, revolution
+- **Trade routes**: Visible pathways between settlements
+- **Technology tree**: Innovation unlocks new buildings
+- **Seasonal cycles**: Visual winter/summer transitions
+- **Sound design**: Ambient music responding to civilization state
 
 ---
 
@@ -349,9 +636,26 @@ By watching, you inevitably intervene:
 
 ```
 culture/
-├── index.html          # Three-phase UI structure
-├── styles.css          # Genesis + God Mode + Report styling
-├── app.js              # Main 3D application (940+ lines)
+├── index.html          # UI structure (252 lines)
+│   ├── Phase 1: Archetype selection grid
+│   ├── 3D preview canvas
+│   ├── Phase 2: Main simulation canvas
+│   ├── Chrono-controller
+│   └── Intervention panel
+├── styles.css          # Styling (685 lines)
+│   ├── Archetype card hover effects
+│   ├── Grid layout for simulation
+│   ├── Event notification animations
+│   └── Time display glowing numbers
+├── app.js              # Core logic (894 lines)
+│   ├── CivilizationSimulator class
+│   ├── 6 archetype definitions
+│   ├── Three.js scene setup
+│   ├── Time accumulator system
+│   ├── 3 crisis injection functions
+│   ├── Dynamic building interpolation
+│   ├── AI behavior state machine
+│   └── Real-time slider effects
 └── README.md           # This documentation
 ```
 
@@ -359,10 +663,34 @@ culture/
 
 ## 🙏 Credits
 
-**Concept**: The Chrono-Cultural Incubator - God Mode Edition
-**3D Engine**: Three.js by Mr.doob and contributors
-**Philosophical Foundation**: Cultural relativism, systems theory, the observer effect
+**Concept**: The Chrono-Cultural Incubator - Accelerated Evolution Edition
+**3D Engine**: Three.js r128 by Mr.doob and contributors
+**Camera Controls**: OrbitControls.js
+**Philosophical Foundation**: Systems theory, cultural ecology, the observer effect
 
 ---
 
-*"Did your divine decree create a thriving culture, or did your interventions lead to collapse?"*
+## 🎯 Quick Reference - Slider Effects
+
+| Slider | Low Value Effect | High Value Effect |
+|--------|-----------------|-------------------|
+| **Life Difficulty** | Green flourishing trees, healthy population | Gray withered vegetation, erratic movement |
+| **Rumor Spread** | Dispersed exploration | Center clustering, agitated grouping |
+| **Tolerance** | Health loss on collision, conflict | Health gain on collision, cooperation |
+| **Innovation** | Static building colors | Rapid color changes, temporary structures |
+| **Climate Threat** | Clear skies, calm | Dark skies, fog, shelter-seeking panic |
+| **Border Openness** | Translucent walls, isolation | No walls, free movement |
+
+---
+
+## ⚡ Quick Reference - Crisis Events
+
+| Event | Duration | Population Loss | Visual Signature | Recovery Time |
+|-------|----------|----------------|------------------|---------------|
+| **THE DELUGE** | 3 seconds | 10-30% | Rising blue water to 1.5 units | 10 seconds |
+| **THE PLAGUE** | 5-10 seconds | Up to 40% | Green sick color, cascading deaths | Permanent |
+| **NEIGHBOR'S WAR** | 8 seconds | 15-35% | Red enemy cones marching inward | Immediate |
+
+---
+
+*"Will your civilization thrive through millennia, or collapse under the weight of your interventions?"*
