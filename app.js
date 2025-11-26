@@ -158,6 +158,12 @@ class AcceleratedCivilization {
 
                 this.selectedArchetype = card.dataset.archetype;
 
+                // Update preview on click as well
+                const data = this.archetypes[this.selectedArchetype];
+                previewName.textContent = data.name;
+                previewDesc.textContent = data.description;
+                this.updatePreview(this.selectedArchetype);
+
                 // Start simulation after brief delay
                 setTimeout(() => this.startSimulation(), 1000);
             });
