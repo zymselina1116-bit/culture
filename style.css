@@ -1,0 +1,521 @@
+/* ==========================================
+   GLOBAL STYLES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #0ff;
+    overflow: hidden;
+}
+
+.screen {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* ==========================================
+   PHASE 1: SELECTION SCREEN
+   ========================================== */
+#selection-screen {
+    background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-title {
+    font-size: 3rem;
+    text-align: center;
+    color: #0ff;
+    text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+    margin-top: 20px;
+    letter-spacing: 4px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #0ff;
+    opacity: 0.7;
+    margin-bottom: 40px;
+}
+
+.selection-container {
+    display: grid;
+    grid-template-columns: 300px 1fr 400px;
+    gap: 30px;
+    height: calc(100vh - 200px);
+    max-width: 1800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Left: Civilization Buttons */
+.civilization-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.civ-btn {
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid #0ff;
+    padding: 30px 20px;
+    color: #0ff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.civ-btn:hover {
+    background: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+    transform: translateX(10px);
+}
+
+.civ-btn.selected {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
+}
+
+.civ-icon {
+    font-size: 3rem;
+}
+
+.civ-name {
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
+
+/* Center: Preview Zone */
+.preview-zone {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 0 50px rgba(0, 255, 255, 0.2);
+}
+
+#preview-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.preview-label {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 255, 255, 0.2);
+    padding: 10px 30px;
+    border: 1px solid #0ff;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+}
+
+/* Right: Description Panel */
+.description-panel {
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#desc-title {
+    font-size: 1.5rem;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+}
+
+#desc-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.desc-text {
+    line-height: 1.6;
+    color: #0ff;
+    opacity: 0.8;
+    margin-bottom: 15px;
+}
+
+.dna-display {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.dna-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.dna-label {
+    color: #0ff;
+}
+
+.dna-value {
+    color: #fff;
+    font-weight: bold;
+}
+
+.start-button {
+    background: rgba(0, 255, 255, 0.2);
+    border: 2px solid #0ff;
+    color: #0ff;
+    padding: 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    letter-spacing: 3px;
+}
+
+.start-button:hover:not(:disabled) {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+}
+
+.start-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   PHASE 2: SIMULATION SCREEN
+   ========================================== */
+#simulation-screen {
+    background: #000;
+}
+
+.sim-header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    text-align: center;
+}
+
+#civ-title {
+    font-size: 2rem;
+    color: #0ff;
+    text-shadow: 0 0 20px #0ff;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+}
+
+.stats-bar {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.stat {
+    color: #0ff;
+    font-size: 0.9rem;
+    background: rgba(0, 255, 255, 0.1);
+    padding: 5px 15px;
+    border: 1px solid #0ff;
+    border-radius: 3px;
+}
+
+/* Main Canvas */
+.main-canvas-container {
+    width: 100vw;
+    height: 100vh;
+}
+
+#main-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Crisis Panel (Left) */
+.crisis-panel {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 10;
+}
+
+.panel-title {
+    font-size: 1rem;
+    color: #0ff;
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.crisis-btn {
+    width: 100%;
+    background: rgba(255, 0, 0, 0.1);
+    border: 2px solid #f00;
+    color: #f00;
+    padding: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.crisis-btn:hover {
+    background: rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+.crisis-icon {
+    font-size: 2rem;
+}
+
+.crisis-name {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.deluge-btn {
+    border-color: #00f;
+    color: #00f;
+    background: rgba(0, 0, 255, 0.1);
+}
+
+.deluge-btn:hover {
+    background: rgba(0, 0, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 255, 0.6);
+}
+
+.plague-btn {
+    border-color: #0f0;
+    color: #0f0;
+    background: rgba(0, 255, 0, 0.1);
+}
+
+.plague-btn:hover {
+    background: rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+}
+
+.war-btn {
+    border-color: #f00;
+    color: #f00;
+    background: rgba(255, 0, 0, 0.1);
+}
+
+.war-btn:hover {
+    background: rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+/* Chrono-Controller (Bottom) */
+.chrono-controller {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    padding: 20px 30px;
+    z-index: 10;
+}
+
+.time-display {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.time-sep {
+    margin: 0 10px;
+    opacity: 0.5;
+}
+
+.time-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.time-label {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #0ff;
+    letter-spacing: 2px;
+}
+
+#time-slider {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 255, 255, 0.2);
+    outline: none;
+    border-radius: 5px;
+}
+
+#time-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #0ff;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #0ff;
+}
+
+.time-scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #0ff;
+    opacity: 0.7;
+}
+
+#current-speed {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+    margin-top: 10px;
+}
+
+/* Intervention Panel (Right) */
+.intervention-panel {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 10;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.slider-group {
+    margin-bottom: 20px;
+}
+
+.slider-group label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #0ff;
+    font-size: 0.9rem;
+}
+
+.slider-name {
+    letter-spacing: 1px;
+}
+
+.slider-val {
+    font-weight: bold;
+    color: #fff;
+}
+
+.param-slider {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 255, 255, 0.2);
+    outline: none;
+    border-radius: 3px;
+}
+
+.param-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #0ff;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #0ff;
+}
+
+/* Scrollbar styling */
+.intervention-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.intervention-panel::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.intervention-panel::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 4px;
+}
+
+/* ==========================================
+   TRANSITIONS & ANIMATIONS
+   ========================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.screen.active {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes glow {
+    0%, 100% {
+        text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+    50% {
+        text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
+    }
+}
+
+.main-title {
+    animation: glow 2s ease-in-out infinite;
+}

@@ -3,249 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Chrono-Cultural Incubator - Accelerated Evolution</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>The Civilization Accelerator - Select, Observe, Intervene</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Phase 1: Archetype Selection -->
-    <div id="archetype-selection" class="phase-container active">
-        <div class="selection-overlay">
-            <h1 class="selection-title">CIVILIZATION ARCHETYPE SELECTION</h1>
-            <p class="selection-subtitle">Choose a society to observe and test</p>
+    <!-- PHASE 1: CIVILIZATION SELECTION -->
+    <div id="selection-screen" class="screen active">
+        <h1 class="main-title">THE CIVILIZATION ACCELERATOR</h1>
+        <p class="subtitle">Select, Observe, Intervene</p>
 
-            <div class="archetype-preview-container">
+        <div class="selection-container">
+            <!-- Left: Civilization Buttons -->
+            <div class="civilization-buttons">
+                <button class="civ-btn" data-civ="egypt">
+                    <span class="civ-icon">𓂀</span>
+                    <span class="civ-name">Ancient Egypt</span>
+                </button>
+                <button class="civ-btn" data-civ="greece">
+                    <span class="civ-icon">Ω</span>
+                    <span class="civ-name">Classical Greece</span>
+                </button>
+                <button class="civ-btn" data-civ="china">
+                    <span class="civ-icon">中</span>
+                    <span class="civ-name">Ancient China</span>
+                </button>
+            </div>
+
+            <!-- Center: 3D Preview -->
+            <div class="preview-zone">
                 <canvas id="preview-canvas"></canvas>
-                <div class="preview-info">
-                    <h3 id="preview-name">Hover over an archetype</h3>
-                    <p id="preview-description">Preview will appear here</p>
-                </div>
+                <div class="preview-label">3D PREVIEW</div>
             </div>
 
-            <div class="archetype-grid">
-                <div class="archetype-card" data-archetype="desert">
-                    <div class="archetype-icon">🏜️</div>
-                    <h3>Desert Nomads</h3>
-                    <p>Harsh survival, high mobility</p>
-                    <div class="archetype-traits">
-                        <span class="trait">High Difficulty</span>
-                        <span class="trait">Low Isolation</span>
-                    </div>
+            <!-- Right: Description Panel -->
+            <div class="description-panel">
+                <h2 id="desc-title">Hover over a civilization</h2>
+                <div id="desc-content">
+                    <p class="desc-text">Select a historical civilization to observe and manipulate their accelerated development.</p>
                 </div>
-
-                <div class="archetype-card" data-archetype="mountain">
-                    <div class="archetype-icon">⛰️</div>
-                    <h3>Mountain Farmers</h3>
-                    <p>Isolated, self-sufficient</p>
-                    <div class="archetype-traits">
-                        <span class="trait">High Isolation</span>
-                        <span class="trait">High Tolerance</span>
-                    </div>
-                </div>
-
-                <div class="archetype-card" data-archetype="coastal">
-                    <div class="archetype-icon">🌊</div>
-                    <h3>Coastal Traders</h3>
-                    <p>Open, innovative</p>
-                    <div class="archetype-traits">
-                        <span class="trait">High Innovation</span>
-                        <span class="trait">High Openness</span>
-                    </div>
-                </div>
-
-                <div class="archetype-card" data-archetype="forest">
-                    <div class="archetype-icon">🌲</div>
-                    <h3>Forest Dwellers</h3>
-                    <p>Balanced, sustainable</p>
-                    <div class="archetype-traits">
-                        <span class="trait">Medium All</span>
-                        <span class="trait">High Stability</span>
-                    </div>
-                </div>
-
-                <div class="archetype-card" data-archetype="steppe">
-                    <div class="archetype-icon">🐎</div>
-                    <h3>Steppe Warriors</h3>
-                    <p>Aggressive, expansionist</p>
-                    <div class="archetype-traits">
-                        <span class="trait">Low Tolerance</span>
-                        <span class="trait">High Rumor</span>
-                    </div>
-                </div>
-
-                <div class="archetype-card" data-archetype="river">
-                    <div class="archetype-icon">🏛️</div>
-                    <h3>River Civilization</h3>
-                    <p>Advanced, organized</p>
-                    <div class="archetype-traits">
-                        <span class="trait">Low Difficulty</span>
-                        <span class="trait">High Innovation</span>
-                    </div>
-                </div>
+                <div id="desc-dna" class="dna-display"></div>
+                <button id="start-btn" class="start-button" disabled>BEGIN SIMULATION</button>
             </div>
         </div>
     </div>
 
-    <!-- Phase 2: Accelerated Simulation -->
-    <div id="accelerated-sim" class="phase-container">
-        <div class="sim-overlay">
-            <div class="header-panel">
-                <h2 class="sim-title" id="civilization-name">CIVILIZATION NAME</h2>
-                <div class="status-bar">
-                    <span class="status-item">
-                        <span class="status-label">ERA:</span>
-                        <span id="current-era">EARLY SETTLEMENT</span>
-                    </span>
-                    <span class="status-item">
-                        <span class="status-label">STATUS:</span>
-                        <span id="civ-status">THRIVING</span>
-                    </span>
+    <!-- PHASE 2: MAIN SIMULATION -->
+    <div id="simulation-screen" class="screen">
+        <div class="sim-header">
+            <h2 id="civ-title">CIVILIZATION NAME</h2>
+            <div class="stats-bar">
+                <span class="stat">Population: <span id="stat-population">0</span></span>
+                <span class="stat">Buildings: <span id="stat-buildings">0</span></span>
+                <span class="stat">Status: <span id="stat-status">INITIALIZING</span></span>
+            </div>
+        </div>
+
+        <!-- Main 3D Canvas -->
+        <div class="main-canvas-container">
+            <canvas id="main-canvas"></canvas>
+        </div>
+
+        <!-- Left: Crisis Buttons -->
+        <div class="crisis-panel">
+            <h3 class="panel-title">MAJOR EVENTS</h3>
+            <button class="crisis-btn deluge-btn" id="btn-deluge">
+                <span class="crisis-icon">🌊</span>
+                <span class="crisis-name">THE DELUGE</span>
+            </button>
+            <button class="crisis-btn plague-btn" id="btn-plague">
+                <span class="crisis-icon">☠️</span>
+                <span class="crisis-name">THE PLAGUE</span>
+            </button>
+            <button class="crisis-btn war-btn" id="btn-war">
+                <span class="crisis-icon">⚔️</span>
+                <span class="crisis-name">NEIGHBOR'S WAR</span>
+            </button>
+        </div>
+
+        <!-- Bottom: Chrono-Controller -->
+        <div class="chrono-controller">
+            <div class="time-display">
+                <span id="time-year">Year 0000</span>
+                <span class="time-sep">—</span>
+                <span id="time-month">Month 01</span>
+                <span class="time-sep">—</span>
+                <span id="time-day">Day 01</span>
+            </div>
+            <div class="time-controls">
+                <label class="time-label">TIME SCALE</label>
+                <input type="range" id="time-slider" min="0" max="3" value="0" step="1">
+                <div class="time-scale-labels">
+                    <span>PAUSE</span>
+                    <span>1×</span>
+                    <span>10×</span>
+                    <span>100×</span>
                 </div>
+                <div id="current-speed">PAUSED</div>
+            </div>
+        </div>
+
+        <!-- Right: Intervention Sliders -->
+        <div class="intervention-panel">
+            <h3 class="panel-title">INTERVENTION PARAMETERS</h3>
+
+            <div class="slider-group">
+                <label>
+                    <span class="slider-name">Life Difficulty</span>
+                    <span class="slider-val" id="val-life">50</span>
+                </label>
+                <input type="range" class="param-slider" id="slider-life" min="0" max="100" value="50">
             </div>
 
-            <!-- Main 3D Canvas -->
-            <div class="canvas-main-container">
-                <canvas id="world-canvas"></canvas>
-
-                <div class="canvas-overlay-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">POPULATION</span>
-                        <span class="stat-value" id="population">30</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">BUILDINGS</span>
-                        <span class="stat-value" id="buildings">8</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">STABILITY</span>
-                        <span class="stat-value" id="stability">100%</span>
-                    </div>
-                </div>
-
-                <div class="event-notification" id="event-notification">
-                    <h3 id="event-title"></h3>
-                    <p id="event-message"></p>
-                </div>
+            <div class="slider-group">
+                <label>
+                    <span class="slider-name">Rumor Intensity</span>
+                    <span class="slider-val" id="val-rumor">50</span>
+                </label>
+                <input type="range" class="param-slider" id="slider-rumor" min="0" max="100" value="50">
             </div>
 
-            <!-- Chrono-Controller -->
-            <div class="chrono-controller">
-                <div class="time-display-panel">
-                    <div class="digital-time">
-                        <span class="time-label">YEAR</span>
-                        <span class="time-value" id="year-display">0000</span>
-                        <span class="time-separator">/</span>
-                        <span class="time-label">MONTH</span>
-                        <span class="time-value" id="month-display">01</span>
-                    </div>
-
-                    <div class="time-scale-control">
-                        <label for="time-scale">TIME SCALE</label>
-                        <div class="time-scale-slider-container">
-                            <input type="range" id="time-scale" min="0" max="3" value="0" step="1" class="time-slider">
-                            <div class="time-scale-labels">
-                                <span class="scale-label">PAUSE</span>
-                                <span class="scale-label">1x</span>
-                                <span class="scale-label">10x</span>
-                                <span class="scale-label">100x</span>
-                            </div>
-                        </div>
-                        <div class="current-speed" id="current-speed">PAUSED</div>
-                    </div>
-                </div>
-
-                <div class="event-injection-panel">
-                    <h3>MAJOR EVENT INJECTION</h3>
-                    <div class="event-buttons">
-                        <button class="event-btn deluge-btn" id="inject-flood">
-                            <span class="event-icon">🌊</span>
-                            <span class="event-name">THE DELUGE</span>
-                            <span class="event-desc">Catastrophic Flood</span>
-                        </button>
-
-                        <button class="event-btn plague-btn" id="inject-plague">
-                            <span class="event-icon">☠️</span>
-                            <span class="event-name">THE PLAGUE</span>
-                            <span class="event-desc">Deadly Disease</span>
-                        </button>
-
-                        <button class="event-btn war-btn" id="inject-war">
-                            <span class="event-icon">⚔️</span>
-                            <span class="event-name">NEIGHBOR'S WAR</span>
-                            <span class="event-desc">External Threat</span>
-                        </button>
-                    </div>
-                </div>
+            <div class="slider-group">
+                <label>
+                    <span class="slider-name">Tolerance Level</span>
+                    <span class="slider-val" id="val-tolerance">50</span>
+                </label>
+                <input type="range" class="param-slider" id="slider-tolerance" min="0" max="100" value="50">
             </div>
 
-            <!-- Intervention Panel (Sliders) -->
-            <div class="intervention-panel">
-                <h3 class="panel-title">INTERVENTION PARAMETERS</h3>
-                <p class="panel-subtitle">Adjust in real-time</p>
+            <div class="slider-group">
+                <label>
+                    <span class="slider-name">Innovation Pace</span>
+                    <span class="slider-val" id="val-innovation">50</span>
+                </label>
+                <input type="range" class="param-slider" id="slider-innovation" min="0" max="100" value="50">
+            </div>
 
-                <div class="slider-container">
-                    <label for="life-difficulty">
-                        <span class="slider-name">LIFE DIFFICULTY</span>
-                        <span class="slider-value" id="life-difficulty-val">50%</span>
-                    </label>
-                    <input type="range" id="life-difficulty" min="0" max="100" value="50" class="intervention-slider">
-                    <p class="slider-desc">Easy ← → Harsh</p>
-                </div>
+            <div class="slider-group">
+                <label>
+                    <span class="slider-name">Climate Threat</span>
+                    <span class="slider-val" id="val-climate">50</span>
+                </label>
+                <input type="range" class="param-slider" id="slider-climate" min="0" max="100" value="50">
+            </div>
 
-                <div class="slider-container">
-                    <label for="rumor-spread">
-                        <span class="slider-name">RUMOR SPREAD</span>
-                        <span class="slider-value" id="rumor-spread-val">50%</span>
-                    </label>
-                    <input type="range" id="rumor-spread" min="0" max="100" value="50" class="intervention-slider">
-                    <p class="slider-desc">Truth ← → Chaos</p>
-                </div>
-
-                <div class="slider-container">
-                    <label for="societal-tolerance">
-                        <span class="slider-name">TOLERANCE</span>
-                        <span class="slider-value" id="societal-tolerance-val">50%</span>
-                    </label>
-                    <input type="range" id="societal-tolerance" min="0" max="100" value="50" class="intervention-slider">
-                    <p class="slider-desc">Conflict ← → Cooperation</p>
-                </div>
-
-                <div class="slider-container">
-                    <label for="innovation-pace">
-                        <span class="slider-name">INNOVATION</span>
-                        <span class="slider-value" id="innovation-pace-val">50%</span>
-                    </label>
-                    <input type="range" id="innovation-pace" min="0" max="100" value="50" class="intervention-slider">
-                    <p class="slider-desc">Static ← → Dynamic</p>
-                </div>
-
-                <div class="slider-container">
-                    <label for="climate-threat">
-                        <span class="slider-name">CLIMATE THREAT</span>
-                        <span class="slider-value" id="climate-threat-val">50%</span>
-                    </label>
-                    <input type="range" id="climate-threat" min="0" max="100" value="50" class="intervention-slider">
-                    <p class="slider-desc">Calm ← → Extreme</p>
-                </div>
-
-                <div class="slider-container">
-                    <label for="border-openness">
-                        <span class="slider-name">BORDER OPENNESS</span>
-                        <span class="slider-value" id="border-openness-val">50%</span>
-                    </label>
-                    <input type="range" id="border-openness" min="0" max="100" value="50" class="intervention-slider">
-                    <p class="slider-desc">Closed ← → Open</p>
-                </div>
-
-                <button id="reset-btn" class="reset-button">RESET SIMULATION</button>
+            <div class="slider-group">
+                <label>
+                    <span class="slider-name">Border Openness</span>
+                    <span class="slider-val" id="val-border">50</span>
+                </label>
+                <input type="range" class="param-slider" id="slider-border" min="0" max="100" value="50">
             </div>
         </div>
     </div>
 
-    <!-- Three.js Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
 
-    <!-- Main Application -->
-    <script src="app.js"></script>
+    <!-- Main Script -->
+    <script src="script.js"></script>
 </body>
 </html>
