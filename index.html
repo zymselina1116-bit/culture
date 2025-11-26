@@ -3,214 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Chrono-Cultural Incubator</title>
+    <title>The Chrono-Cultural Incubator - 3D God Mode</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Phase 0: Culture Selection -->
-    <div id="culture-selection" class="phase-container active">
-        <div class="ancient-overlay">
-            <h1 class="ancient-title">The Chrono-Cultural Incubator</h1>
-            <p class="ancient-subtitle">Select an Ancient Civilization to Decode</p>
+    <!-- Phase 1: Genesis Configuration (Text-to-Code) -->
+    <div id="genesis-configuration" class="phase-container active">
+        <div class="genesis-overlay">
+            <h1 class="genesis-title">CIVILIZATION GENESIS</h1>
+            <p class="genesis-subtitle">Define Your Culture Through Divine Decree</p>
 
-            <div class="culture-grid">
-                <div class="culture-card" data-culture="china">
-                    <div class="culture-icon">🐉</div>
-                    <h3>Ancient East Asia</h3>
-                    <p>Yellow River Valley</p>
-                    <p class="culture-era">~1.7M BCE - 220 CE</p>
+            <div class="preview-3d-container">
+                <canvas id="preview-canvas"></canvas>
+                <div class="preview-overlay">
+                    <p class="preview-hint">Your world will grow as you define it...</p>
+                </div>
+            </div>
+
+            <div class="genesis-form">
+                <div class="input-group">
+                    <label for="civ-name">
+                        <span class="prompt-number">1.</span>
+                        <span class="prompt-text">What is the name of your civilization?</span>
+                    </label>
+                    <input type="text" id="civ-name" class="genesis-input" placeholder="Enter civilization name..." />
                 </div>
 
-                <div class="culture-card" data-culture="mesopotamia">
-                    <div class="culture-icon">𒀭</div>
-                    <h3>Mesopotamia</h3>
-                    <p>Cradle of Civilization</p>
-                    <p class="culture-era">~4000 - 539 BCE</p>
+                <div class="input-group">
+                    <label for="civ-fear">
+                        <span class="prompt-number">2.</span>
+                        <span class="prompt-text">Describe your civilization's greatest fear or need</span>
+                    </label>
+                    <textarea id="civ-fear" class="genesis-textarea"
+                        placeholder="e.g., 'survival in perpetual darkness', 'constant need for flowing water', 'fear of the sky falling'..."></textarea>
+                    <p class="input-hint">This defines the climate and resource distribution of your island.</p>
                 </div>
 
-                <div class="culture-card" data-culture="mesoamerica">
-                    <div class="culture-icon">⊕</div>
-                    <h3>Mesoamerica</h3>
-                    <p>Olmec to Maya</p>
-                    <p class="culture-era">~1500 BCE - 1521 CE</p>
+                <div class="input-group">
+                    <label for="civ-aesthetic">
+                        <span class="prompt-number">3.</span>
+                        <span class="prompt-text">Describe your civilization's core aesthetic</span>
+                    </label>
+                    <textarea id="civ-aesthetic" class="genesis-textarea"
+                        placeholder="e.g., 'polished obsidian and crimson silk', 'rough hewn timber and sea-green cloth', 'crystalline structures with golden accents'..."></textarea>
+                    <p class="input-hint">Materials, colors, and architectural style for buildings and inhabitants.</p>
                 </div>
 
-                <div class="culture-card" data-culture="mediterranean">
-                    <div class="culture-icon">⚡</div>
-                    <h3>Ancient Mediterranean</h3>
-                    <p>Greece & Rome</p>
-                    <p class="culture-era">~800 BCE - 476 CE</p>
+                <div class="input-group">
+                    <label for="civ-ritual">
+                        <span class="prompt-number">4.</span>
+                        <span class="prompt-text">Define your civilization's unique daily ritual or core belief</span>
+                    </label>
+                    <textarea id="civ-ritual" class="genesis-textarea"
+                        placeholder="e.g., 'Every hour they must raise their hands to the sky', 'They bow in perfect synchrony when two meet', 'Silence is their only trusted form of communication'..."></textarea>
+                    <p class="input-hint">This ritual will be performed periodically by every inhabitant.</p>
                 </div>
+
+                <button id="begin-creation-btn" class="genesis-button" disabled>BEGIN CREATION</button>
+                <p class="validation-message" id="validation-msg">Complete all fields to begin</p>
             </div>
         </div>
     </div>
 
-    <!-- Phase 1: Archeo-Decryption -->
-    <div id="archeo-decryption" class="phase-container">
-        <div class="ancient-overlay">
-            <h2 class="ancient-title">Decoding the Ancient Code</h2>
-            <p class="ancient-subtitle" id="culture-name"></p>
-
-            <div class="code-stream-container">
-                <canvas id="code-stream"></canvas>
-                <div class="code-overlay">
-                    <div id="gap-point-ui" class="gap-point-hidden">
-                        <h3 class="gap-title">Interpretation Point <span id="gap-number"></span>/3</h3>
-                        <p class="gap-question" id="gap-question"></p>
-
-                        <div class="rune-choices">
-                            <div class="rune-option" data-choice="A">
-                                <div class="rune-symbol" id="rune-A"></div>
-                                <p class="rune-text" id="text-A"></p>
-                            </div>
-                            <div class="rune-option" data-choice="B">
-                                <div class="rune-symbol" id="rune-B"></div>
-                                <p class="rune-text" id="text-B"></p>
-                            </div>
-                            <div class="rune-option" data-choice="C">
-                                <div class="rune-symbol" id="rune-C"></div>
-                                <p class="rune-text" id="text-C"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="progress-dots">
-                <span class="dot" id="dot-1"></span>
-                <span class="dot" id="dot-2"></span>
-                <span class="dot" id="dot-3"></span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Phase 2: Digital Incubation -->
-    <div id="digital-incubation" class="phase-container">
-        <div class="modern-overlay">
+    <!-- Phase 2: 3D Incubation (God Mode) -->
+    <div id="god-mode" class="phase-container">
+        <div class="god-mode-overlay">
             <div class="header-panel">
-                <h2 class="tech-title">CULTURAL INCUBATION SYSTEM</h2>
+                <h2 class="tech-title" id="civilization-title">CIVILIZATION NAME</h2>
                 <div class="status-bar">
-                    <span id="culture-display"></span>
-                    <span id="simulation-time">00:00</span>
+                    <span class="status-item">
+                        <span class="status-label">SIMULATION TIME:</span>
+                        <span id="simulation-time">00:00</span>
+                    </span>
+                    <span class="status-item ritual-status" id="ritual-status">
+                        <span class="status-label">CORE RITUAL:</span>
+                        <span id="ritual-health">ACTIVE</span>
+                    </span>
                     <button id="freeze-btn" class="freeze-button">FREEZE SIMULATION</button>
                 </div>
             </div>
 
             <div class="main-grid">
-                <div class="canvas-container">
-                    <canvas id="particle-canvas"></canvas>
+                <!-- 3D Canvas -->
+                <div class="canvas-3d-container">
+                    <canvas id="world-canvas"></canvas>
+
                     <div class="canvas-stats">
                         <div class="stat-item">
                             <span class="stat-label">POPULATION</span>
                             <span class="stat-value" id="population">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">STABILITY</span>
-                            <span class="stat-value" id="stability">0%</span>
+                            <span class="stat-label">SURVIVAL RATE</span>
+                            <span class="stat-value" id="survival-rate">100%</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">COMPLEXITY</span>
-                            <span class="stat-value" id="complexity">0</span>
+                            <span class="stat-label">STABILITY</span>
+                            <span class="stat-value" id="stability">100%</span>
                         </div>
+                    </div>
+
+                    <div class="camera-controls">
+                        <p class="control-hint">🖱️ Drag to rotate • Scroll to zoom</p>
                     </div>
                 </div>
 
+                <!-- God Controller Panel -->
                 <div class="control-panel">
-                    <h3 class="panel-title">GOD CONTROLLER</h3>
-                    <p class="panel-subtitle">Real-Time Intervention Parameters</p>
+                    <h3 class="panel-title">GOD MODE CONTROLLER</h3>
+                    <p class="panel-subtitle">Real-Time Divine Intervention</p>
 
                     <div class="slider-container">
-                        <label for="resource-entropy">
-                            <span class="slider-name">RESOURCE ENTROPY</span>
-                            <span class="slider-value" id="resource-entropy-val">50%</span>
+                        <label for="life-difficulty">
+                            <span class="slider-name">LIFE DIFFICULTY RATING</span>
+                            <span class="slider-value" id="life-difficulty-val">50%</span>
                         </label>
-                        <input type="range" id="resource-entropy" min="0" max="100" value="50" class="intervention-slider">
-                        <p class="slider-desc">Abundance ← → Scarcity</p>
+                        <input type="range" id="life-difficulty" min="0" max="100" value="50" class="intervention-slider">
+                        <p class="slider-desc">Easy ← → Harsh</p>
+                        <div class="impact-desc">
+                            <strong>Impact:</strong> Vegetation withering, food scarcity, erratic movement
+                        </div>
                     </div>
 
                     <div class="slider-container">
-                        <label for="information-fidelity">
-                            <span class="slider-name">INFORMATION FIDELITY</span>
-                            <span class="slider-value" id="information-fidelity-val">50%</span>
+                        <label for="rumor-spread">
+                            <span class="slider-name">RUMOR SPREAD INTENSITY</span>
+                            <span class="slider-value" id="rumor-spread-val">50%</span>
                         </label>
-                        <input type="range" id="information-fidelity" min="0" max="100" value="50" class="intervention-slider">
-                        <p class="slider-desc">Knowledge Spread Rate</p>
+                        <input type="range" id="rumor-spread" min="0" max="100" value="50" class="intervention-slider">
+                        <p class="slider-desc">Controlled ← → Chaotic</p>
+                        <div class="impact-desc">
+                            <strong>Impact:</strong> Clustering behavior, communication breakdown
+                        </div>
                     </div>
 
                     <div class="slider-container">
-                        <label for="conflict-resolution">
-                            <span class="slider-name">CONFLICT RESOLUTION INDEX</span>
-                            <span class="slider-value" id="conflict-resolution-val">50%</span>
+                        <label for="societal-tolerance">
+                            <span class="slider-name">SOCIETAL TOLERANCE LEVEL</span>
+                            <span class="slider-value" id="societal-tolerance-val">50%</span>
                         </label>
-                        <input type="range" id="conflict-resolution" min="0" max="100" value="50" class="intervention-slider">
-                        <p class="slider-desc">Constructive ← → Destructive</p>
+                        <input type="range" id="societal-tolerance" min="0" max="100" value="50" class="intervention-slider">
+                        <p class="slider-desc">Low ← → High</p>
+                        <div class="impact-desc">
+                            <strong>Impact:</strong> Destructive vs cooperative interactions
+                        </div>
                     </div>
 
                     <div class="slider-container">
-                        <label for="symbol-mutation">
-                            <span class="slider-name">SYMBOL MUTATION RATE</span>
-                            <span class="slider-value" id="symbol-mutation-val">50%</span>
+                        <label for="innovation-pace">
+                            <span class="slider-name">PACE OF TREND/INNOVATION</span>
+                            <span class="slider-value" id="innovation-pace-val">50%</span>
                         </label>
-                        <input type="range" id="symbol-mutation" min="0" max="100" value="50" class="intervention-slider">
-                        <p class="slider-desc">Cultural Innovation Speed</p>
+                        <input type="range" id="innovation-pace" min="0" max="100" value="50" class="intervention-slider">
+                        <p class="slider-desc">Static ← → Rapid</p>
+                        <div class="impact-desc">
+                            <strong>Impact:</strong> Color/style changes, temporary structures
+                        </div>
                     </div>
 
                     <div class="slider-container">
-                        <label for="environmental-pressure">
-                            <span class="slider-name">ENVIRONMENTAL PRESSURE</span>
-                            <span class="slider-value" id="environmental-pressure-val">50%</span>
+                        <label for="climate-threat">
+                            <span class="slider-name">CLIMATE/DISASTER THREAT</span>
+                            <span class="slider-value" id="climate-threat-val">50%</span>
                         </label>
-                        <input type="range" id="environmental-pressure" min="0" max="100" value="50" class="intervention-slider">
-                        <p class="slider-desc">Overall Stress Level</p>
+                        <input type="range" id="climate-threat" min="0" max="100" value="50" class="intervention-slider">
+                        <p class="slider-desc">Calm ← → Extreme</p>
+                        <div class="impact-desc">
+                            <strong>Impact:</strong> Weather effects, panic behavior, shelter-seeking
+                        </div>
                     </div>
 
                     <div class="slider-container">
-                        <label for="cultural-isolation">
-                            <span class="slider-name">CULTURAL ISOLATION FACTOR</span>
-                            <span class="slider-value" id="cultural-isolation-val">50%</span>
+                        <label for="border-openness">
+                            <span class="slider-name">BORDER OPENNESS LEVEL</span>
+                            <span class="slider-value" id="border-openness-val">50%</span>
                         </label>
-                        <input type="range" id="cultural-isolation" min="0" max="100" value="50" class="intervention-slider">
-                        <p class="slider-desc">Separation ← → Integration</p>
+                        <input type="range" id="border-openness" min="0" max="100" value="50" class="intervention-slider">
+                        <p class="slider-desc">Closed ← → Open</p>
+                        <div class="impact-desc">
+                            <strong>Impact:</strong> Walls appear/dissolve, cross-group exchange
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Phase 3: Final Reflection -->
-    <div id="final-reflection" class="phase-container">
-        <div class="reflection-overlay">
-            <h2 class="reflection-title">CULTURAL SIMULATION COMPLETE</h2>
+    <!-- Phase 3: Final Report -->
+    <div id="final-report" class="phase-container">
+        <div class="report-overlay">
+            <h2 class="report-title">SIMULATION COMPLETE</h2>
+            <p class="report-subtitle">Cultural Analysis Report</p>
 
-            <div class="reflection-grid">
-                <div class="reflection-panel">
-                    <h3>Initial Interpretation Bias</h3>
-                    <div id="initial-params" class="param-list"></div>
+            <div class="report-grid">
+                <div class="report-panel">
+                    <h3>Initial Genesis Configuration</h3>
+                    <div id="initial-config" class="config-display"></div>
                 </div>
 
-                <div class="reflection-panel">
-                    <h3>Final Evolved State</h3>
-                    <canvas id="final-snapshot" width="400" height="300"></canvas>
-                    <div id="final-params" class="param-list"></div>
+                <div class="report-panel">
+                    <h3>Final 3D State Snapshot</h3>
+                    <canvas id="final-snapshot" width="500" height="400"></canvas>
                 </div>
             </div>
 
             <div class="report-section">
-                <h3>Cultural Evolution Report</h3>
-                <div id="evolution-report"></div>
+                <h3>Final God Controller Settings</h3>
+                <div id="final-sliders" class="slider-display"></div>
             </div>
 
-            <div class="final-question">
-                <p>"Did your interpretation save this culture, or did your intervention destroy it?"</p>
+            <div class="report-section">
+                <h3>Civilization Outcome Analysis</h3>
+                <div id="outcome-analysis"></div>
             </div>
 
-            <button id="restart-btn" class="restart-button">BEGIN NEW SIMULATION</button>
+            <div class="final-reflection">
+                <p class="reflection-text">
+                    "Did your divine decree create a thriving culture, or did your interventions lead to collapse?"
+                </p>
+            </div>
+
+            <button id="restart-btn" class="restart-button">CREATE NEW CIVILIZATION</button>
         </div>
     </div>
 
-    <!-- Audio element for chime sounds -->
-    <audio id="chime-sound" preload="auto"></audio>
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+    <!-- OrbitControls for camera -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Main Application -->
     <script src="app.js"></script>
 </body>
 </html>
