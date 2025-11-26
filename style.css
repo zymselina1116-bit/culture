@@ -28,17 +28,18 @@ body {
 }
 
 /* ==========================================
-   PHASE 1: SELECTION SCREEN
+   PHASE 1: WORLD MAP SELECTION
    ========================================== */
 #selection-screen {
-    background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+    background: radial-gradient(ellipse at center, #001a33 0%, #000814 100%);
     padding: 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .main-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     text-align: center;
     color: #0ff;
     text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
@@ -48,166 +49,192 @@ body {
 
 .subtitle {
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #0ff;
     opacity: 0.7;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
-.selection-container {
-    display: grid;
-    grid-template-columns: 300px 1fr 400px;
-    gap: 30px;
-    height: calc(100vh - 200px);
-    max-width: 1800px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-/* Left: Civilization Buttons */
-.civilization-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-}
-
-.civ-btn {
-    background: rgba(0, 255, 255, 0.1);
-    border: 2px solid #0ff;
-    padding: 30px 20px;
-    color: #0ff;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    border-radius: 10px;
-}
-
-.civ-btn:hover {
-    background: rgba(0, 255, 255, 0.3);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-    transform: translateX(10px);
-}
-
-.civ-btn.selected {
-    background: rgba(0, 255, 255, 0.4);
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
-}
-
-.civ-icon {
-    font-size: 3rem;
-}
-
-.civ-name {
-    font-size: 1rem;
-    letter-spacing: 2px;
-}
-
-/* Center: Preview Zone */
-.preview-zone {
+/* World Map Container */
+.world-map-container {
     position: relative;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid #0ff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: inset 0 0 50px rgba(0, 255, 255, 0.2);
+    width: 90vw;
+    max-width: 1400px;
+    height: 70vh;
+    margin: 0 auto;
 }
 
-#preview-canvas {
+/* Stylized World Map */
+.world-map {
     width: 100%;
     height: 100%;
-    display: block;
+    position: relative;
+    background:
+        radial-gradient(ellipse at 25% 45%, rgba(34, 139, 34, 0.3) 0%, transparent 15%),
+        radial-gradient(ellipse at 52% 42%, rgba(210, 180, 140, 0.4) 0%, transparent 8%),
+        radial-gradient(ellipse at 54% 38%, rgba(100, 149, 237, 0.3) 0%, transparent 6%),
+        radial-gradient(ellipse at 75% 40%, rgba(139, 69, 19, 0.3) 0%, transparent 10%),
+        radial-gradient(ellipse at 58% 40%, rgba(184, 134, 11, 0.3) 0%, transparent 7%),
+        linear-gradient(180deg, #001a33 0%, #003d5c 50%, #001a33 100%);
+    border: 3px solid rgba(0, 255, 255, 0.5);
+    border-radius: 15px;
+    box-shadow:
+        inset 0 0 100px rgba(0, 100, 150, 0.3),
+        0 0 50px rgba(0, 255, 255, 0.2);
+    overflow: hidden;
 }
 
-.preview-label {
+/* Grid overlay for map effect */
+.world-map::before {
+    content: '';
     position: absolute;
-    top: 20px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+}
+
+/* Civilization Markers */
+.civ-marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 10;
+}
+
+.marker-dot {
+    width: 20px;
+    height: 20px;
+    background: #0ff;
+    border-radius: 50%;
+    box-shadow:
+        0 0 20px #0ff,
+        0 0 40px #0ff,
+        inset 0 0 10px rgba(255, 255, 255, 0.5);
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.marker-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 255, 255, 0.4);
+    border-radius: 50%;
+    animation: pulse-ring 2s ease-out infinite;
+    z-index: 1;
+}
+
+@keyframes pulse-ring {
+    0% {
+        width: 20px;
+        height: 20px;
+        opacity: 1;
+    }
+    100% {
+        width: 80px;
+        height: 80px;
+        opacity: 0;
+    }
+}
+
+.marker-label {
+    position: absolute;
+    top: 30px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 255, 255, 0.2);
-    padding: 10px 30px;
-    border: 1px solid #0ff;
-    font-size: 0.9rem;
-    letter-spacing: 3px;
+    color: #0ff;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    text-shadow: 0 0 10px #0ff;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
-/* Right: Description Panel */
-.description-panel {
-    background: rgba(0, 255, 255, 0.05);
+.civ-marker:hover .marker-label {
+    opacity: 1;
+}
+
+.civ-marker:hover .marker-dot {
+    width: 30px;
+    height: 30px;
+    box-shadow:
+        0 0 30px #0ff,
+        0 0 60px #0ff,
+        inset 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+.civ-marker.selected .marker-dot {
+    background: #ff0;
+    box-shadow:
+        0 0 30px #ff0,
+        0 0 60px #ff0,
+        inset 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+/* Preview Panel */
+.preview-panel {
+    position: absolute;
+    background: rgba(0, 20, 40, 0.95);
     border: 2px solid #0ff;
     border-radius: 10px;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    padding: 15px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    z-index: 100;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
 }
 
-#desc-title {
-    font-size: 1.5rem;
+.preview-panel.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.preview-title {
     color: #0ff;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-align: center;
     text-shadow: 0 0 10px #0ff;
 }
 
-#desc-content {
-    flex: 1;
-    overflow-y: auto;
-}
-
-.desc-text {
-    line-height: 1.6;
-    color: #0ff;
-    opacity: 0.8;
-    margin-bottom: 15px;
-}
-
-.dna-display {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.3);
+#preview-canvas {
+    display: block;
+    border: 1px solid rgba(0, 255, 255, 0.3);
     border-radius: 5px;
+    margin-bottom: 10px;
 }
 
-.dna-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-}
-
-.dna-label {
+.preview-description {
     color: #0ff;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    opacity: 0.9;
 }
 
-.dna-value {
-    color: #fff;
-    font-weight: bold;
-}
-
-.start-button {
-    background: rgba(0, 255, 255, 0.2);
-    border: 2px solid #0ff;
+/* Map Instruction */
+.map-instruction {
+    text-align: center;
     color: #0ff;
-    padding: 20px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    letter-spacing: 3px;
+    font-size: 1.1rem;
+    margin-top: 20px;
+    text-shadow: 0 0 10px #0ff;
+    animation: blink 2s ease-in-out infinite;
 }
 
-.start-button:hover:not(:disabled) {
-    background: rgba(0, 255, 255, 0.4);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-}
-
-.start-button:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
+@keyframes blink {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 /* ==========================================

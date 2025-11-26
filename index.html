@@ -7,50 +7,61 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- PHASE 1: CIVILIZATION SELECTION -->
+    <!-- PHASE 1: WORLD MAP SELECTION -->
     <div id="selection-screen" class="screen active">
         <h1 class="main-title">THE CIVILIZATION ACCELERATOR</h1>
-        <p class="subtitle">Select, Observe, Intervene</p>
+        <p class="subtitle">Select a Civilization from the World Map</p>
 
-        <div class="selection-container">
-            <!-- Left: Map Buttons -->
-            <div class="civilization-buttons">
-                <button class="civ-btn" data-map="river">
-                    <span class="civ-icon">🏞️</span>
-                    <span class="civ-name">River Basin</span>
-                </button>
-                <button class="civ-btn" data-map="mountain">
-                    <span class="civ-icon">⛰️</span>
-                    <span class="civ-name">Mountain Valley</span>
-                </button>
-                <button class="civ-btn" data-map="coastal">
-                    <span class="civ-icon">🌊</span>
-                    <span class="civ-name">Coastal Peninsula</span>
-                </button>
-            </div>
-
-            <!-- Center: 3D Preview -->
-            <div class="preview-zone">
-                <canvas id="preview-canvas"></canvas>
-                <div class="preview-label">MAP PREVIEW</div>
-            </div>
-
-            <!-- Right: Description Panel -->
-            <div class="description-panel">
-                <h2 id="desc-title">Hover over a map</h2>
-                <div id="desc-content">
-                    <p class="desc-text">Select a map to determine the terrain, climate, and environmental characteristics of your civilization.</p>
+        <div class="world-map-container">
+            <!-- Stylized world map background -->
+            <div class="world-map">
+                <!-- Civilization markers positioned on map -->
+                <div class="civ-marker" data-civ="egypt" style="left: 52%; top: 42%;">
+                    <div class="marker-pulse"></div>
+                    <div class="marker-dot"></div>
+                    <span class="marker-label">Egypt</span>
                 </div>
-                <div id="desc-dna" class="dna-display"></div>
-                <button id="start-btn" class="start-button" disabled>BEGIN SIMULATION</button>
+
+                <div class="civ-marker" data-civ="greece" style="left: 54%; top: 38%;">
+                    <div class="marker-pulse"></div>
+                    <div class="marker-dot"></div>
+                    <span class="marker-label">Greece</span>
+                </div>
+
+                <div class="civ-marker" data-civ="china" style="left: 75%; top: 40%;">
+                    <div class="marker-pulse"></div>
+                    <div class="marker-dot"></div>
+                    <span class="marker-label">China</span>
+                </div>
+
+                <div class="civ-marker" data-civ="mesopotamia" style="left: 58%; top: 40%;">
+                    <div class="marker-pulse"></div>
+                    <div class="marker-dot"></div>
+                    <span class="marker-label">Mesopotamia</span>
+                </div>
+
+                <div class="civ-marker" data-civ="maya" style="left: 22%; top: 48%;">
+                    <div class="marker-pulse"></div>
+                    <div class="marker-dot"></div>
+                    <span class="marker-label">Maya</span>
+                </div>
+            </div>
+
+            <!-- Floating preview panel (shown on hover) -->
+            <div id="preview-panel" class="preview-panel hidden">
+                <h3 id="preview-civ-name" class="preview-title">Civilization</h3>
+                <canvas id="preview-canvas" width="300" height="200"></canvas>
+                <div id="preview-info" class="preview-description"></div>
             </div>
         </div>
+
+        <div class="map-instruction">Click on a civilization marker to begin</div>
     </div>
 
     <!-- PHASE 2: MAIN SIMULATION -->
     <div id="simulation-screen" class="screen">
         <div class="sim-header">
-            <h2 id="civ-title">MAP: UNKNOWN</h2>
+            <h2 id="civ-title">CIVILIZATION</h2>
             <div class="stats-bar">
                 <span class="stat">Population: <span id="stat-population">0</span></span>
                 <span class="stat">Buildings: <span id="stat-buildings">0</span></span>
