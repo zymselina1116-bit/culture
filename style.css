@@ -33,6 +33,9 @@ body {
 #selection-screen {
     background: radial-gradient(ellipse at center, #001a33 0%, #000814 100%);
     padding: 20px;
+}
+
+#selection-screen.active {
     display: flex;
     flex-direction: column;
     align-items: center;

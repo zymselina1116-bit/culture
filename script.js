@@ -495,36 +495,54 @@ class CivilizationAccelerator {
     }
 
     initMainCanvas() {
-        console.log('Initializing main canvas...');
+        console.log('=== Initializing main canvas ===');
 
-        // Show loading overlay initially
-        const loadingOverlay = document.getElementById('loading-overlay');
-        loadingOverlay.classList.remove('hidden');
-
-        // Create new canvas and append to container
         const container = document.getElementById('sim-container');
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        // Ensure loading overlay is visible
+        loadingOverlay.classList.remove('hidden');
+        loadingOverlay.style.display = 'flex';
+
+        // Create canvas element
         const canvas = document.createElement('canvas');
         canvas.id = 'main-canvas';
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        canvas.style.display = 'block';
-        container.insertBefore(canvas, loadingOverlay);
+        canvas.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 1;
+        `;
 
-        console.log('Canvas created and appended');
+        // Insert canvas at the beginning of container
+        container.insertBefore(canvas, container.firstChild);
 
-        // Create NEW Three.js scene for main simulation
+        console.log('Canvas element created and inserted');
+        console.log('Canvas dimensions:', canvas.offsetWidth, 'x', canvas.offsetHeight);
+
+        // Create Three.js scene
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x1a1a2e);
-        scene.fog = new THREE.Fog(0x1a1a2e, 50, 200);
+        scene.background = new THREE.Color(0x0a0a1e);
+        scene.fog = new THREE.Fog(0x0a0a1e, 50, 200);
 
-        // Camera positioned at 3/4 angled top-down view
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // Camera setup
+        const camera = new THREE.PerspectiveCamera(
+            60,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
         camera.position.set(30, 25, 30);
         camera.lookAt(0, 0, 0);
 
-        // Create renderer
+        console.log('Camera position:', camera.position);
+
+        // Renderer setup
         const renderer = new THREE.WebGLRenderer({
-            canvas,
+            canvas: canvas,
             antialias: true,
             alpha: false
         });
@@ -532,24 +550,25 @@ class CivilizationAccelerator {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.setClearColor(0x0a0a1e, 1);
 
-        console.log('Renderer created');
+        console.log('Renderer configured:', window.innerWidth, 'x', window.innerHeight);
 
-        // OrbitControls with limited angle (cannot go below ground)
+        // OrbitControls
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.maxPolarAngle = Math.PI / 2.2; // Prevent going below horizon
+        controls.maxPolarAngle = Math.PI / 2.2;
         controls.minDistance = 10;
         controls.maxDistance = 100;
         controls.target.set(0, 0, 0);
         controls.update();
 
-        // Lighting - ambient + directional
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        // Enhanced lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
         scene.add(ambientLight);
 
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
         dirLight.position.set(50, 50, 30);
         dirLight.castShadow = true;
         dirLight.shadow.camera.left = -50;
@@ -560,36 +579,58 @@ class CivilizationAccelerator {
         dirLight.shadow.mapSize.height = 2048;
         scene.add(dirLight);
 
+        // Add hemisphere light for better ambient lighting
+        const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x1a1a2e, 0.5);
+        scene.add(hemiLight);
+
         this.mainScene = { scene, camera, renderer, controls };
 
-        console.log('Creating world...');
+        console.log('Scene objects:', scene.children.length);
 
-        // Create world immediately
+        // Create world
+        console.log('Creating terrain...');
         this.createTerrain();
+
+        console.log('Creating water...');
         this.createWater();
+
+        console.log('Creating buildings...');
         this.createBuildings();
+
+        console.log('Creating NPCs...');
         this.createNPCs();
 
-        console.log('World created, starting animation');
+        console.log('Total scene objects:', scene.children.length);
+
+        // Force multiple initial renders
+        for (let i = 0; i < 3; i++) {
+            renderer.render(scene, camera);
+        }
 
         // Start animation loop
         this.isSimulationRunning = true;
         this.animate();
 
-        // Force initial render
-        renderer.render(scene, camera);
+        console.log('Animation loop started');
 
-        // Hide loading after 2 seconds
+        // Hide loading overlay after 2 seconds
         setTimeout(() => {
             loadingOverlay.classList.add('hidden');
-            console.log('Loading hidden, scene should be visible');
+            loadingOverlay.style.display = 'none';
+            console.log('=== Canvas initialization complete ===');
+            console.log('Scene should now be visible');
         }, 2000);
 
-        // Handle resize
+        // Handle window resize
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(width, height);
+
+            console.log('Resized to:', width, 'x', height);
         });
     }
 
